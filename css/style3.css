@@ -1,0 +1,481 @@
+/* ==========================================================================
+   THE MATHEMATICAL GAME - AUTENTICAÇÃO (LOGIN & CADASTRO)
+   Layout da tela de login/cadastro, formulários e glassmorphism cards
+   ========================================================================== */
+
+/* Centraliza o card de auth na tela toda */
+body.auth-body,
+body:has(.auth-container),
+body:has(.auth-card) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 30px 16px;
+    margin: 0;
+}
+
+/* Container e Card de Autenticação */
+.auth-container {
+    width: 100%;
+    max-width: 440px;
+    margin: auto;
+    position: relative;
+    z-index: 10;
+    animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.auth-card {
+    background: rgba(11, 30, 54, 0.82);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    padding: 36px 32px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 30px rgba(0, 168, 255, 0.07);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00a8ff, #fbbf24, #00a8ff);
+    opacity: 0.85;
+}
+
+/* Cabeçalho do Card de Auth */
+.auth-header {
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.logo-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.logo-img {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.4));
+    transition: var(--transition-smooth);
+}
+
+.logo-wrapper:hover .logo-img {
+    transform: scale(1.04) rotate(-2deg);
+    filter: drop-shadow(0 8px 18px rgba(245, 158, 11, 0.35));
+}
+
+.auth-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--color-text-title);
+    letter-spacing: -0.02em;
+    margin-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+.auth-title .highlight {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-subtitle {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+}
+
+/* Formulário */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+}
+
+.form-label {
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 13px;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.form-input {
+    width: 100%;
+    background: rgba(7, 19, 36, 0.65);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-md);
+    padding: 11px 40px 11px 40px;
+    font-size: 0.93rem;
+    color: #ffffff;
+    font-family: inherit;
+    transition: var(--transition-smooth);
+    outline: none;
+}
+
+.form-input::placeholder { color: #64748b; }
+
+.form-input:focus {
+    border-color: var(--color-gold-primary);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    background: rgba(11, 28, 52, 0.85);
+}
+
+.input-container:focus-within .input-icon {
+    color: var(--color-gold-light);
+}
+
+/* Toggle de Senha */
+.btn-toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+}
+
+.btn-toggle-password:hover { color: #ffffff; }
+
+/* Extras (Lembrar-me / Esqueceu senha) */
+.form-extras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    accent-color: var(--color-gold-primary);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.link-forgot {
+    color: var(--color-gold-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.link-forgot:hover { color: #ffffff; text-decoration: underline; }
+
+/* Medidor de Força de Senha */
+.strength-bar {
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.strength-progress {
+    height: 100%;
+    width: 0%;
+    transition: var(--transition-smooth);
+    border-radius: var(--radius-full);
+}
+
+.strength-text {
+    font-size: 0.74rem;
+    color: var(--color-text-muted);
+}
+
+/* Botão Principal */
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #0f172a;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    box-shadow: var(--shadow-button-gold);
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-button-hover);
+}
+
+/* Divisor */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 18px 0;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-border-subtle);
+}
+
+.auth-divider span { padding: 0 12px; }
+
+/* Botão Google */
+.google-auth-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-google-custom {
+    width: 100%;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.93rem;
+    padding: 10px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+    transition: var(--transition-smooth);
+}
+
+.btn-google-custom:hover {
+    background: #f8fafc;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    transform: translateY(-1px);
+}
+
+.google-icon { width: 19px; height: 19px; }
+
+/* Footer do Card (Link trocar de tela) */
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+}
+
+.auth-footer a {
+    color: var(--color-gold-light);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.auth-footer a:hover { color: #ffffff; text-decoration: underline; }
+
+/* Alertas */
+.alert-box {
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.86rem;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-7px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.alert-error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #fca5a5;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #86efac;
+}
+
+@media (max-width: 480px) {
+    .auth-card { padding: 26px 18px; }
+    .logo-img { width: 80px; height: 80px; }
+    .auth-title { font-size: 1.38rem; }
+}
+
+/* Suporte ao Tema Claro na Autenticação */
+html[data-theme='light'] .auth-card {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(16, 37, 58, 0.15);
+    box-shadow: 0 24px 60px rgba(44, 62, 80, 0.18), 0 0 30px rgba(0, 168, 255, 0.08);
+}
+
+html[data-theme='light'] .auth-title {
+    color: #10253a;
+}
+
+html[data-theme='light'] .auth-subtitle {
+    color: #475569;
+}
+
+html[data-theme='light'] .form-label {
+    color: #1e293b;
+}
+
+html[data-theme='light'] .form-input {
+    background: rgba(241, 245, 249, 0.9);
+    border-color: rgba(16, 37, 58, 0.18);
+    color: #0f172a;
+}
+
+html[data-theme='light'] .form-input:focus {
+    background: #ffffff;
+    border-color: var(--color-cyan-vibrant);
+    box-shadow: 0 0 0 3px rgba(0, 168, 255, 0.15);
+}
+
+html[data-theme='light'] .input-icon {
+    color: #64748b;
+}
+
+html[data-theme='light'] .btn-toggle-password {
+    color: #64748b;
+}
+
+html[data-theme='light'] .btn-toggle-password:hover {
+    color: #0f172a;
+}
+
+html[data-theme='light'] .checkbox-custom {
+    border-color: rgba(16, 37, 58, 0.3);
+    background: rgba(241, 245, 249, 0.9);
+}
+
+html[data-theme='light'] .auth-form-options {
+    color: #475569;
+}
+
+html[data-theme='light'] .link-forgot {
+    color: #0284c7;
+}
+
+html[data-theme='light'] .link-forgot:hover {
+    color: #0369a1;
+}
+
+html[data-theme='light'] .auth-divider span {
+    color: #64748b;
+}
+
+html[data-theme='light'] .auth-divider::before,
+html[data-theme='light'] .auth-divider::after {
+    background: rgba(16, 37, 58, 0.15);
+}
+
+html[data-theme='light'] .auth-footer {
+    color: #475569;
+    border-top-color: rgba(16, 37, 58, 0.12);
+}
+
+html[data-theme='light'] .auth-footer a {
+    color: #0284c7;
+}
+
+html[data-theme='light'] .auth-footer a:hover {
+    color: #0369a1;
+}
+
+html[data-theme='light'] .checkbox-label {
+    color: #334155;
+}
+
+html[data-theme='light'] .form-input::placeholder {
+    color: #94a3b8;
+}
+
+html[data-theme='light'] .btn-toggle-password:hover {
+    color: #0f172a;
+}
+
+/* Theme toggle button on auth pages - top-right fixed */
+.auth-theme-toggle-wrapper {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    left: auto !important;
+    z-index: 9999;
+}
+
+.auth-theme-toggle-wrapper .theme-toggle {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: auto !important;
+    min-width: 88px !important;
+    height: 40px !important;
+    flex: 0 0 auto !important;
+}

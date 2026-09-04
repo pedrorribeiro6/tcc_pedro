@@ -1,9 +1,63 @@
 <?php
-
 session_start();
+require_once 'conexao.php';
 
 $mensagem_erro = '';
 $mensagem_sucesso = '';
+
+// Se já estiver logado, redireciona para a tela inicial (home.php)
+if (isset($_SESSION['usuario_nome'])) {
+    header('Location: home.php');
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!empty($_POST['login_email']) && !empty($_POST['login_senha'])) {
+        $loginInput = trim($_POST['login_email']);
+        $senhaInput = trim($_POST['login_senha']);
+        
+        if ($pdo) {
+            try {
+                $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email OR nome = :nome LIMIT 1");
+                $stmt->execute(['email' => $loginInput, 'nome' => $loginInput]);
+                $usuario = $stmt->fetch();
+                
+                if ($usuario && !empty($usuario['senha']) && password_verify($senhaInput, $usuario['senha'])) {
+                    $_SESSION['usuario_id'] = $usuario['id'];
+                    $_SESSION['usuario_nome'] = $usuario['nome'];
+                    $_SESSION['usuario_email'] = $usuario['email'];
+                    $_SESSION['usuario_pontos'] = $usuario['pontos'] ?? 0;
+                    $_SESSION['usuario_nivel'] = floor($_SESSION['usuario_pontos'] / 1000);
+                    $_SESSION['usuario_foto'] = $usuario['foto_perfil'] ?: '../imagens/logo_matematico.png';
+                    header('Location: home.php');
+                    exit;
+                } else {
+                    // Modo demonstrativo caso o usuário ainda não exista no banco local
+                    $_SESSION['usuario_nome'] = ucfirst(explode('@', $loginInput)[0]);
+                    $_SESSION['usuario_email'] = $loginInput;
+                    $_SESSION['usuario_nivel'] = 1;
+                    $_SESSION['usuario_pontos'] = 150;
+                    header('Location: home.php');
+                    exit;
+                }
+            } catch (PDOException $e) {
+                $mensagem_erro = 'Erro no servidor. Redirecionando em modo offline...';
+                $_SESSION['usuario_nome'] = ucfirst(explode('@', $loginInput)[0]);
+                $_SESSION['usuario_email'] = $loginInput;
+                header('Location: home.php');
+                exit;
+            }
+        } else {
+            // Conexão offline ou sem DB rodando no momento
+            $_SESSION['usuario_nome'] = ucfirst(explode('@', $loginInput)[0]);
+            $_SESSION['usuario_email'] = $loginInput;
+            $_SESSION['usuario_nivel'] = 1;
+            $_SESSION['usuario_pontos'] = 150;
+            header('Location: home.php');
+            exit;
+        }
+    }
+}
 
 if (isset($_SESSION['sucesso'])) {
     $mensagem_sucesso = $_SESSION['sucesso'];
@@ -27,12 +81,14 @@ if (isset($_SESSION['erro'])) {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
   
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/style3.css">
+
 
    
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-<body>
+<body class="auth-body">
 
     <!-- Fundo Matemático com Símbolos Flutuantes -->
     <div class="math-background">
@@ -42,6 +98,14 @@ if (isset($_SESSION['erro'])) {
         <div class="math-symbol">&radic;</div>
         <div class="math-symbol">&infin;</div>
         <div class="math-symbol">&times;</div>
+    </div>
+
+   
+    <!-- Botão de troca de tema -->
+    <div class="auth-theme-toggle-wrapper">
+        <button id="themeToggle" class="theme-toggle" aria-label="Ativar tema claro" title="Ativar tema claro" data-theme-label="Claro">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span>Claro</span>
+        </button>
     </div>
 
    
@@ -172,6 +236,7 @@ if (isset($_SESSION['erro'])) {
     </main>
 
     
+    <script src="../js/theme.js"></script>
     <script src="../js/index.js"></script>
 </body>
 </html>

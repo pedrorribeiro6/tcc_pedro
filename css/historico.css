@@ -1,0 +1,224 @@
+/* ==========================================================================
+   THE MATHEMATICAL GAME - HISTÓRICO DE PARTIDAS (HISTORICO.PHP)
+   ========================================================================== */
+
+.history-card {
+    background: var(--color-bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+}
+
+.history-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.history-summary-card {
+    background: rgba(7, 19, 36, 0.7);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    text-align: center;
+    transition: var(--transition-smooth);
+}
+
+.history-summary-card:hover {
+    border-color: rgba(0, 168, 255, 0.4);
+    background: rgba(11, 28, 52, 0.9);
+}
+
+.summary-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--color-gold-light);
+    line-height: 1.2;
+}
+
+.summary-val.accuracy {
+    color: #10b981;
+    text-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+.summary-lbl {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+
+.accuracy-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #86efac;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.88rem;
+}
+
+.history-table th {
+    padding: 12px 14px;
+    color: var(--color-text-muted);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.history-table td {
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--color-border-subtle);
+    color: var(--color-text-main);
+    vertical-align: middle;
+}
+
+.history-table tr:last-child td {
+    border-bottom: none;
+}
+
+.history-table tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.game-mode-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--color-text-title);
+}
+
+.mode-icon-mini {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(0, 168, 255, 0.15);
+    color: var(--color-cyan-vibrant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.status-win {
+    background: rgba(16, 185, 129, 0.15);
+    color: #86efac;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-draw {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fde047;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.score-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: var(--color-gold-light);
+}
+
+/* Suporte ao Tema Claro no Histórico */
+html[data-theme='light'] .history-card {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border-color: rgba(16, 37, 58, 0.14) !important;
+    box-shadow: 0 16px 40px rgba(16, 37, 58, 0.08) !important;
+}
+
+html[data-theme='light'] .history-summary-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(16, 37, 58, 0.14) !important;
+    box-shadow: 0 4px 16px rgba(16, 37, 58, 0.05) !important;
+}
+
+html[data-theme='light'] .history-summary-card:hover {
+    background: #ffffff !important;
+    border-color: var(--color-cyan-vibrant) !important;
+    box-shadow: 0 8px 24px rgba(0, 168, 255, 0.12) !important;
+}
+
+html[data-theme='light'] .summary-val {
+    color: #b45309;
+}
+
+html[data-theme='light'] .summary-val.accuracy {
+    color: #047857;
+    text-shadow: none;
+}
+
+html[data-theme='light'] .summary-lbl {
+    color: #475569;
+    font-weight: 800;
+}
+
+html[data-theme='light'] .history-table th {
+    color: #334155;
+    font-weight: 800;
+    border-bottom: 1px solid rgba(16, 37, 58, 0.14);
+}
+
+html[data-theme='light'] .history-table td {
+    color: #1e293b;
+    border-bottom: 1px solid rgba(16, 37, 58, 0.08);
+}
+
+html[data-theme='light'] .history-table tr:hover td {
+    background: rgba(0, 168, 255, 0.05);
+}
+
+html[data-theme='light'] .status-win {
+    background: rgba(16, 185, 129, 0.14);
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+html[data-theme='light'] .status-draw {
+    background: rgba(245, 158, 11, 0.14);
+    color: #b45309;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+html[data-theme='light'] .accuracy-badge-pill {
+    background: rgba(16, 185, 129, 0.14);
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+html[data-theme='light'] .score-text {
+    color: #b45309;
+}
+

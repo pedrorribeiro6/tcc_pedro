@@ -1,4 +1,3 @@
--- Criação do Banco de Dados para The Mathematical Game
 CREATE DATABASE IF NOT EXISTS `the_mathematical_game` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `the_mathematical_game`;
 
@@ -15,3 +14,18 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
     `criado_em` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `atualizado_em` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabela de Histórico de Partidas
+CREATE TABLE IF NOT EXISTS `historico_partidas` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `usuario_id` INT NOT NULL,
+    `modo_jogo` VARCHAR(100) NOT NULL,
+    `resultado` VARCHAR(50) NOT NULL,
+    `pontos_ganhos` INT DEFAULT 0,
+    `precisao_porcentagem` INT DEFAULT 0,
+    `acertos` INT DEFAULT 0,
+    `total_questoes` INT DEFAULT 0,
+    `data_partida` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

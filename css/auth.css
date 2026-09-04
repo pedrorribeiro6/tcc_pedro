@@ -1,0 +1,370 @@
+/* ==========================================================================
+   THE MATHEMATICAL GAME - AUTENTICAÇÃO (LOGIN & CADASTRO)
+   ========================================================================== */
+
+/* Container Principal de Autenticação */
+.auth-container {
+    width: 100%;
+    max-width: 460px;
+    margin: auto;
+    position: relative;
+    z-index: 10;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Card com Glassmorphism */
+.auth-card {
+    background: var(--color-bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 38px 34px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Brilho de Borda Superior */
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00a8ff, #fbbf24, #00a8ff);
+    opacity: 0.85;
+}
+
+/* Cabeçalho da Autenticação e Logo */
+.auth-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.logo-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.logo-img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
+    transition: var(--transition-smooth);
+}
+
+.logo-wrapper:hover .logo-img {
+    transform: scale(1.05) rotate(-2deg);
+    filter: drop-shadow(0 8px 20px var(--color-gold-glow));
+}
+
+.auth-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--color-text-title);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+}
+
+.auth-title .highlight {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-subtitle {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+}
+
+/* Formulário e Grupos de Input */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+}
+
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.form-input {
+    width: 100%;
+    background: var(--color-input-bg);
+    border: 1.5px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    padding: 12px 42px 12px 42px;
+    font-size: 0.95rem;
+    color: #ffffff;
+    font-family: inherit;
+    transition: var(--transition-smooth);
+    outline: none;
+}
+
+.form-input::placeholder {
+    color: #64748b;
+}
+
+.form-input:focus {
+    border-color: var(--color-gold-primary);
+    box-shadow: 0 0 0 3px var(--color-gold-glow);
+    background: rgba(11, 28, 52, 0.85);
+}
+
+.input-container:focus-within .input-icon {
+    color: var(--color-gold-light);
+}
+
+/* Botão de Alternar Visibilidade de Senha */
+.btn-toggle-password {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+}
+
+.btn-toggle-password:hover {
+    color: #ffffff;
+}
+
+/* Opções Adicionais (Lembrar-me / Esqueci Senha) */
+.form-extras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.84rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    accent-color: var(--color-gold-primary);
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.link-forgot {
+    color: var(--color-gold-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.link-forgot:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Medidor de Força da Senha (Cadastro) */
+.password-strength-container {
+    margin-top: 4px;
+}
+
+.strength-bar {
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.strength-progress {
+    height: 100%;
+    width: 0%;
+    transition: var(--transition-smooth);
+    border-radius: var(--radius-full);
+}
+
+.strength-text {
+    font-size: 0.76rem;
+    color: var(--color-text-muted);
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Botões de Ação */
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: var(--color-text-dark);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    padding: 13px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    box-shadow: var(--shadow-button-gold);
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-button-hover);
+    background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Divisor Visual "ou" */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 22px 0;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-border-subtle);
+}
+
+.auth-divider span {
+    padding: 0 14px;
+}
+
+/* Botão Google Identity API Container */
+.google-auth-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-google-custom {
+    width: 100%;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 11px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    transition: var(--transition-smooth);
+}
+
+.btn-google-custom:hover {
+    background: #f8fafc;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1.5px);
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Rodapé do Card (Link de Troca Login/Cadastro) */
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.auth-footer a {
+    color: var(--color-gold-light);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.auth-footer a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 28px 20px;
+        border-radius: var(--radius-md);
+    }
+
+    .logo-img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .auth-title {
+        font-size: 1.45rem;
+    }
+}

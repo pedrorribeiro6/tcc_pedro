@@ -27,12 +27,13 @@ if (isset($_SESSION['erro'])) {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Estilo Personalizado -->
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/style3.css">
 
     <!-- Google Identity Services API (GIS) -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-<body>
+<body class="auth-body">
 
     <!-- Fundo Matemático com Símbolos Flutuantes -->
     <div class="math-background">
@@ -42,6 +43,13 @@ if (isset($_SESSION['erro'])) {
         <div class="math-symbol">&radic;</div>
         <div class="math-symbol">&infin;</div>
         <div class="math-symbol">&times;</div>
+    </div>
+
+    <!-- Botão de troca de tema -->
+    <div class="auth-theme-toggle-wrapper">
+        <button id="themeToggle" class="theme-toggle" aria-label="Ativar tema claro" title="Ativar tema claro" data-theme-label="Claro">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span>Claro</span>
+        </button>
     </div>
 
     <!-- Container Principal -->
@@ -212,6 +220,7 @@ if (isset($_SESSION['erro'])) {
     </main>
 
     
+    <script src="../js/theme.js"></script>
     <script src="../js/index.js"></script>
 </body>
 </html>

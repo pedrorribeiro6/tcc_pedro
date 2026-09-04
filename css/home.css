@@ -1,0 +1,304 @@
+/* ==========================================================================
+   THE MATHEMATICAL GAME - PAINEL INICIAL (HOME.PHP)
+   ========================================================================== */
+
+/* Layout Principal do Dashboard */
+.dashboard-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 98px 24px 60px 24px;
+}
+
+/* Hero Section / Banner do Jogador */
+.dashboard-hero {
+    background: linear-gradient(135deg, rgba(11, 30, 54, 0.95) 0%, rgba(6, 16, 30, 0.95) 100%),
+                radial-gradient(circle at right top, rgba(0, 168, 255, 0.2), transparent 50%);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 32px 36px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.dashboard-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-cyan-vibrant), var(--color-gold-primary), var(--color-cyan-vibrant));
+}
+
+.hero-text-content {
+    max-width: 650px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: var(--color-gold-light);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: var(--color-text-title);
+    line-height: 1.25;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.hero-subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+/* Progresso de XP no Hero */
+.xp-progress-wrapper {
+    margin-bottom: 24px;
+}
+
+.xp-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 6px;
+}
+
+.xp-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    position: relative;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    width: 68%;
+    background: linear-gradient(90deg, var(--color-cyan-vibrant), var(--color-gold-light));
+    border-radius: var(--radius-full);
+    box-shadow: 0 0 12px var(--color-cyan-glow);
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: var(--color-text-dark);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 13px 28px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    box-shadow: var(--shadow-button-gold);
+    transition: var(--transition-smooth);
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-button-hover);
+    background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+}
+
+.btn-hero-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--color-border-subtle);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 13px 22px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.btn-hero-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+html[data-theme='dark'] .dashboard-hero .btn-hero-secondary {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-theme='dark'] .dashboard-hero .btn-hero-secondary:hover {
+    background: rgba(255, 255, 255, 0.16) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    color: #ffffff !important;
+}
+
+.hero-visual-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-width: 180px;
+}
+
+.hero-streak-card {
+    background: rgba(13, 31, 56, 0.9);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    animation: float 6s ease-in-out infinite;
+}
+
+.streak-number {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.streak-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+
+/* Seção de Cabeçalho de Bloco */
+.section-header-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+}
+
+.block-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--color-text-title);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.block-title-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 168, 255, 0.15);
+    color: var(--color-cyan-vibrant);
+}
+
+.block-subtitle {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+html[data-theme='light'] .btn-hero-secondary {
+    background: rgba(0, 168, 255, 0.08);
+    border-color: rgba(0, 168, 255, 0.28);
+    color: #0b1e36;
+}
+
+html[data-theme='light'] .btn-hero-secondary:hover {
+    background: rgba(0, 168, 255, 0.16);
+    border-color: var(--color-cyan-vibrant);
+    color: #06101e;
+}
+
+html[data-theme='light'] .dashboard-hero {
+    background: linear-gradient(135deg, rgba(220, 231, 242, 0.98) 0%, rgba(200, 220, 238, 0.98) 100%),
+                radial-gradient(circle at right top, rgba(0, 168, 255, 0.1), transparent 50%);
+    border-color: rgba(16, 37, 58, 0.12);
+}
+
+html[data-theme='light'] .hero-streak-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(245, 158, 11, 0.35);
+    box-shadow: 0 8px 24px rgba(16, 37, 58, 0.1);
+}
+
+html[data-theme='light'] .dashboard-hero .btn-hero-secondary {
+    color: #0b1e36;
+    background: rgba(0, 168, 255, 0.1);
+    border: 1px solid rgba(0, 168, 255, 0.28);
+}
+
+html[data-theme='light'] .dashboard-hero .btn-hero-secondary:hover {
+    background: rgba(0, 168, 255, 0.18);
+    border-color: var(--color-cyan-vibrant);
+    color: #06101e;
+}
+
+@media (max-width: 992px) {
+    .dashboard-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 26px 20px;
+    }
+
+    .hero-visual-badge {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .hero-streak-card {
+        width: 100%;
+        padding: 16px;
+    }
+
+    .hero-title {
+        font-size: 1.7rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-container {
+        padding: 85px 16px 40px 16px;
+    }
+}
