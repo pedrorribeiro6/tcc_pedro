@@ -237,6 +237,25 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
                     Fórmulas fundamentais para determinar a superfície de figuras no plano e a capacidade volumétrica de sólidos tridimensionais.
                 </p>
 
+                <div class="geometry-images-panel" id="geometryImagesPanel">
+                    <div class="geometry-images-heading">
+                        <div>
+                            <h3>Galeria de figuras</h3>
+                            <p>Consulte imagens de referência para visualizar cada forma.</p>
+                        </div>
+                        <div class="geometry-images-controls">
+                            <label for="geometryImageType">Tipo de figura</label>
+                            <select id="geometryImageType">
+                                <option value="2d">2D: figuras planas</option>
+                                <option value="3d">3D: sólidos geométricos</option>
+                            </select>
+                            <button type="button" id="searchGeometryImages">Buscar imagens</button>
+                        </div>
+                    </div>
+                    <div class="geometry-images-status" id="geometryImagesStatus" role="status">Selecione um tipo para carregar imagens.</div>
+                    <div class="geometry-images-grid" id="geometryImagesGrid"></div>
+                </div>
+
                 <div class="formula-cards-grid">
                     <div class="formula-detail-card">
                         <div class="formula-card-header">Área do Quadrado</div>

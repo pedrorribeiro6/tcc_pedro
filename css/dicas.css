@@ -80,6 +80,127 @@
     gap: 22px;
 }
 
+.geometry-images-panel {
+    margin: 0 0 28px;
+    padding: 20px;
+    border: 1px solid rgba(0, 168, 255, 0.28);
+    border-radius: var(--radius-md);
+    background: rgba(4, 16, 31, 0.52);
+}
+
+.geometry-images-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 20px;
+}
+
+.geometry-images-heading h3 {
+    margin: 0 0 5px;
+    color: var(--color-text-title);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+}
+
+.geometry-images-heading p,
+.geometry-images-status {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+}
+
+.geometry-images-controls {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.geometry-images-controls label {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+}
+
+.geometry-images-controls select,
+.geometry-images-controls button {
+    min-height: 38px;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 0 12px;
+    font: inherit;
+}
+
+.geometry-images-controls select {
+    background: rgba(7, 19, 36, 0.85);
+    color: var(--color-text-title);
+}
+
+.geometry-images-controls button {
+    background: var(--color-cyan-vibrant);
+    color: #04101e;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.geometry-images-controls button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.geometry-images-status {
+    margin-top: 16px;
+}
+
+.geometry-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.geometry-image-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-sm);
+    background: rgba(7, 19, 36, 0.72);
+}
+
+.geometry-image-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.geometry-image-title {
+    display: block;
+    overflow: hidden;
+    padding: 9px 10px;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+html[data-theme='light'] .geometry-images-panel,
+html[data-theme='light'] .geometry-image-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(16, 37, 58, 0.14);
+}
+
+html[data-theme='light'] .geometry-images-controls select {
+    background: #ffffff;
+    color: #0f172a;
+}
+
+@media (max-width: 700px) {
+    .geometry-images-heading,
+    .geometry-images-controls {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
 .formula-detail-card {
     background: rgba(7, 19, 36, 0.65);
     border: 1px solid var(--color-border-subtle);

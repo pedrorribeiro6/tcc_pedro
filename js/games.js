@@ -178,47 +178,341 @@ function renderQuizQuestion(container) {
 // ==========================================================================
 // 2. JOGO 2: GEOMETRIA 2D & 3D (2 OPÇÕES: VERDADEIRO / FALSO)
 // ==========================================================================
-function regularPolygonPoints(sides, centerX, centerY, radius, rotation = -Math.PI / 2) {
-    return Array.from({ length: sides }, (_, index) => {
-        const angle = rotation + (index * 2 * Math.PI) / sides;
-        return `${centerX + radius * Math.cos(angle)},${centerY + radius * Math.sin(angle)}`;
-    }).join(' ');
-}
-
-function createPrismSvg(sides) {
-    const front = regularPolygonPoints(sides, 38, 58, 27);
-    const back = regularPolygonPoints(sides, 62, 42, 27);
-    const frontPoints = front.split(' ');
-    const backPoints = back.split(' ');
-    const connectors = frontPoints.map((point, index) => `<line x1="${point.split(',')[0]}" y1="${point.split(',')[1]}" x2="${backPoints[index].split(',')[0]}" y2="${backPoints[index].split(',')[1]}"/>`).join('');
-
-    return `<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="${front}" fill="none" stroke="#00a8ff" stroke-width="3"/><polygon points="${back}" fill="none" stroke="#fbbf24" stroke-width="3"/>${connectors}</svg>`;
-}
 
 const shapes2D3D = [
-    { name: 'Quadrado', type: '2D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><rect x="15" y="15" width="70" height="70" fill="none" stroke="#00a8ff" stroke-width="4"/></svg>' },
-    { name: 'Retângulo', type: '2D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><rect x="10" y="25" width="80" height="50" fill="none" stroke="#38bdf8" stroke-width="4"/></svg>' },
-    { name: 'Círculo', type: '2D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><circle cx="50" cy="50" r="38" fill="none" stroke="#fbbf24" stroke-width="4"/></svg>' },
-    { name: 'Triângulo', type: '2D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="50,12 12,88 88,88" fill="none" stroke="#10b981" stroke-width="4"/></svg>' },
-    { name: 'Pentágono', type: '2D', svg: `<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="${regularPolygonPoints(5, 50, 50, 38)}" fill="none" stroke="#f59e0b" stroke-width="4"/></svg>` },
-    { name: 'Hexágono', type: '2D', svg: `<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="${regularPolygonPoints(6, 50, 50, 38)}" fill="none" stroke="#38bdf8" stroke-width="4"/></svg>` },
-    { name: 'Heptágono', type: '2D', svg: `<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="${regularPolygonPoints(7, 50, 50, 38)}" fill="none" stroke="#a78bfa" stroke-width="4"/></svg>` },
-    { name: 'Octógono', type: '2D', svg: `<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="${regularPolygonPoints(8, 50, 50, 38)}" fill="none" stroke="#fb7185" stroke-width="4"/></svg>` },
-    { name: 'Losango', type: '2D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="50,10 88,50 50,90 12,50" fill="none" stroke="#22d3ee" stroke-width="4"/></svg>' },
-    { name: 'Trapézio', type: '2D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="30,18 70,18 90,82 10,82" fill="none" stroke="#f59e0b" stroke-width="4"/></svg>' },
-    { name: 'Cubo', type: '3D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><path d="M25,32 L65,32 L65,72 L25,72 Z M40,17 L80,17 L80,57 L40,57 Z M25,32 L40,17 M65,32 L80,17 M65,72 L80,57 M25,72 L40,57" fill="none" stroke="#00a8ff" stroke-width="3"/></svg>' },
-    { name: 'Cilindro', type: '3D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><ellipse cx="50" cy="25" rx="35" ry="12" fill="none" stroke="#00a8ff" stroke-width="3"/><path d="M15,25 V75 M85,25 V75" fill="none" stroke="#fbbf24" stroke-width="3"/><ellipse cx="50" cy="75" rx="35" ry="12" fill="none" stroke="#00a8ff" stroke-width="3"/></svg>' },
-    { name: 'Esfera', type: '3D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><circle cx="50" cy="50" r="38" fill="none" stroke="#00a8ff" stroke-width="3"/><ellipse cx="50" cy="50" rx="38" ry="12" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="5,5"/></svg>' },
-    { name: 'Cone', type: '3D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><ellipse cx="50" cy="80" rx="35" ry="12" fill="none" stroke="#00a8ff" stroke-width="3"/><line x1="50" y1="15" x2="15" y2="80" stroke="#fbbf24" stroke-width="3"/><line x1="50" y1="15" x2="85" y2="80" stroke="#fbbf24" stroke-width="3"/></svg>' },
-    { name: 'Pirâmide', type: '3D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><polygon points="50,10 15,80 85,80" fill="none" stroke="#fbbf24" stroke-width="3"/><line x1="50" y1="10" x2="50" y2="80" stroke="#00a8ff" stroke-width="2.5" stroke-dasharray="4,4"/></svg>' },
-    { name: 'Pirâmide triangular', type: '3D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><path d="M50,12 L15,78 L85,78 Z M50,12 L50,78 M15,78 L62,62" fill="none" stroke="#fbbf24" stroke-width="3"/></svg>' },
-    { name: 'Pirâmide quadrangular', type: '3D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><path d="M50,10 L15,72 L50,88 L85,72 Z M50,10 V88 M15,72 L85,72" fill="none" stroke="#fbbf24" stroke-width="3"/></svg>' },
-    { name: 'Paralelepípedo', type: '3D', svg: '<svg viewBox="0 0 100 100" class="geometry-svg"><path d="M18,35 L62,25 L82,40 L38,50 Z M18,35 V75 L38,90 V50 M38,50 L82,40 V80 L38,90 M62,25 V65" fill="none" stroke="#38bdf8" stroke-width="3"/></svg>' },
-    { name: 'Cilindro pentagonal', type: '3D', svg: createPrismSvg(5) },
-    { name: 'Cilindro hexagonal', type: '3D', svg: createPrismSvg(6) },
-    { name: 'Cilindro heptagonal', type: '3D', svg: createPrismSvg(7) },
-    { name: 'Cilindro octagonal', type: '3D', svg: createPrismSvg(8) }
+    // --- FIGURAS 2D ---
+    { 
+        name: 'Quadrado', 
+        type: '2D', 
+        image: '../imagens/geometria/quadrado.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <rect x="20" y="20" width="80" height="80" rx="4" fill="rgba(0, 168, 255, 0.15)" stroke="#00a8ff" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Retângulo', 
+        type: '2D', 
+        image: '../imagens/geometria/retangulo.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <rect x="12" y="32" width="96" height="56" rx="4" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Círculo', 
+        type: '2D', 
+        image: '../imagens/geometria/circulo.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <circle cx="60" cy="60" r="44" fill="rgba(251, 191, 36, 0.15)" stroke="#fbbf24" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Triângulo', 
+        type: '2D', 
+        image: '../imagens/geometria/triangulo.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <polygon points="60,16 16,100 104,100" stroke-linejoin="round" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Pentágono', 
+        type: '2D', 
+        image: '../imagens/geometria/pentagono.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <polygon points="60,16 104,48 87,98 33,98 16,48" stroke-linejoin="round" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Hexágono', 
+        type: '2D', 
+        image: '../imagens/geometria/hexagono.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <polygon points="60,15 99,37 99,83 60,105 21,83 21,37" stroke-linejoin="round" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Heptágono', 
+        type: '2D', 
+        image: '../imagens/geometria/heptagono.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <polygon points="60,15 95,32 104,70 80,101 40,101 16,70 25,32" stroke-linejoin="round" fill="rgba(167, 139, 250, 0.15)" stroke="#a78bfa" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Octógono', 
+        type: '2D', 
+        image: '../imagens/geometria/octogono.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <polygon points="42,16 78,16 104,42 104,78 78,104 42,104 16,78 16,42" stroke-linejoin="round" fill="rgba(251, 113, 133, 0.15)" stroke="#fb7185" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Losango', 
+        type: '2D', 
+        image: '../imagens/geometria/losango.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <polygon points="60,14 104,60 60,106 16,60" stroke-linejoin="round" fill="rgba(34, 211, 238, 0.15)" stroke="#22d3ee" stroke-width="4"/>
+        </svg>` 
+    },
+    { 
+        name: 'Trapézio', 
+        type: '2D', 
+        image: '../imagens/geometria/trapezio.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <polygon points="35,26 85,26 106,94 14,94" stroke-linejoin="round" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="4"/>
+        </svg>` 
+    },
+
+    // --- FIGURAS 3D SÓLIDAS E PROFISSIONAIS ---
+    { 
+        name: 'Cubo', 
+        type: '3D', 
+        image: '../imagens/geometria/cubo.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="cubeTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8"/>
+                    <stop offset="100%" stop-color="#0ea5e9"/>
+                </linearGradient>
+                <linearGradient id="cubeLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#0369a1"/>
+                </linearGradient>
+                <linearGradient id="cubeRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0369a1"/>
+                    <stop offset="100%" stop-color="#075985"/>
+                </linearGradient>
+            </defs>
+            <!-- Face Superior -->
+            <polygon points="60,18 96,38 60,58 24,38" fill="url(#cubeTop)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Face Esquerda -->
+            <polygon points="24,38 60,58 60,98 24,78" fill="url(#cubeLeft)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Face Direita -->
+            <polygon points="60,58 96,38 96,78 60,98" fill="url(#cubeRight)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>` 
+    },
+    { 
+        name: 'Cilindro', 
+        type: '3D', 
+        image: '../imagens/geometria/cilindro.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="cylBody" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#0369a1"/>
+                    <stop offset="30%" stop-color="#38bdf8"/>
+                    <stop offset="70%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#082f49"/>
+                </linearGradient>
+                <linearGradient id="cylTop" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#7dd3fc"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+            </defs>
+            <!-- Corpo -->
+            <path d="M26,36 C26,46 94,46 94,36 L94,84 C94,94 26,94 26,84 Z" fill="url(#cylBody)" stroke="#0284c7" stroke-width="2"/>
+            <!-- Base inferior curva pontilhada (profundidade) -->
+            <ellipse cx="60" cy="84" rx="34" ry="9" fill="none" stroke="#e0f2fe" stroke-width="2" stroke-dasharray="4 3"/>
+            <!-- Topo -->
+            <ellipse cx="60" cy="36" rx="34" ry="9" fill="url(#cylTop)" stroke="#e0f2fe" stroke-width="2.5"/>
+        </svg>` 
+    },
+    { 
+        name: 'Esfera', 
+        type: '3D', 
+        image: '../imagens/geometria/esfera.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <radialGradient id="sphereGrad" cx="38%" cy="32%" r="68%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="22%" stop-color="#38bdf8"/>
+                    <stop offset="65%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#082f49"/>
+                </radialGradient>
+            </defs>
+            <!-- Corpo Esférico 3D com luz especular -->
+            <circle cx="60" cy="60" r="44" fill="url(#sphereGrad)" stroke="#7dd3fc" stroke-width="2"/>
+            <!-- Linha do equador sutil -->
+            <ellipse cx="60" cy="60" rx="44" ry="12" fill="none" stroke="rgba(255, 255, 255, 0.4)" stroke-width="1.8" stroke-dasharray="4 3"/>
+        </svg>` 
+    },
+    { 
+        name: 'Cone', 
+        type: '3D', 
+        image: '../imagens/geometria/cone.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="coneBody" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#0369a1"/>
+                    <stop offset="35%" stop-color="#38bdf8"/>
+                    <stop offset="75%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#082f49"/>
+                </linearGradient>
+                <linearGradient id="coneBase" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#0369a1"/>
+                </linearGradient>
+            </defs>
+            <!-- Corpo do cone -->
+            <path d="M60,18 L26,88 C36,98 84,98 94,88 Z" fill="url(#coneBody)" stroke="#0284c7" stroke-width="2"/>
+            <!-- Elipse da base -->
+            <ellipse cx="60" cy="88" rx="34" ry="9" fill="url(#coneBase)" stroke="#e0f2fe" stroke-width="2.5"/>
+            <!-- Arco traseiro tracejado -->
+            <path d="M26,88 C32,80 88,80 94,88" fill="none" stroke="#e0f2fe" stroke-width="2" stroke-dasharray="4 3"/>
+        </svg>` 
+    },
+    { 
+        name: 'Pirâmide', 
+        type: '3D', 
+        image: '../imagens/geometria/piramide.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="pyrLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fbbf24"/>
+                    <stop offset="100%" stop-color="#d97706"/>
+                </linearGradient>
+                <linearGradient id="pyrRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#d97706"/>
+                    <stop offset="100%" stop-color="#78350f"/>
+                </linearGradient>
+            </defs>
+            <!-- Base oculta pontilhada -->
+            <polygon points="22,82 58,68 98,78 62,96" fill="none" stroke="rgba(251,191,36,0.4)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <!-- Face esquerda -->
+            <polygon points="60,16 22,82 62,96" fill="url(#pyrLeft)" stroke="#fef3c7" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Face direita -->
+            <polygon points="60,16 62,96 98,78" fill="url(#pyrRight)" stroke="#fef3c7" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>` 
+    },
+    { 
+        name: 'Pirâmide triangular', 
+        type: '3D', 
+        image: '../imagens/geometria/piramide_triangular.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="tetLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fbbf24"/>
+                    <stop offset="100%" stop-color="#f59e0b"/>
+                </linearGradient>
+                <linearGradient id="tetRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#d97706"/>
+                    <stop offset="100%" stop-color="#92400e"/>
+                </linearGradient>
+            </defs>
+            <!-- Aresta interna pontilhada -->
+            <line x1="60" y1="16" x2="60" y2="72" stroke="rgba(251,191,36,0.6)" stroke-width="1.8" stroke-dasharray="4 3"/>
+            <!-- Face esquerda -->
+            <polygon points="60,16 22,86 64,94" fill="url(#tetLeft)" stroke="#fef3c7" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Face direita -->
+            <polygon points="60,16 64,94 98,82" fill="url(#tetRight)" stroke="#fef3c7" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="22,86 64,94 98,82" fill="rgba(146, 64, 14, 0.4)" stroke="#fef3c7" stroke-width="2" stroke-linejoin="round"/>
+        </svg>` 
+    },
+    { 
+        name: 'Paralelepípedo', 
+        type: '3D', 
+        image: '../imagens/geometria/paralelepipedo.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="parTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8"/>
+                    <stop offset="100%" stop-color="#0ea5e9"/>
+                </linearGradient>
+                <linearGradient id="parFront" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#0369a1"/>
+                </linearGradient>
+                <linearGradient id="parSide" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0369a1"/>
+                    <stop offset="100%" stop-color="#075985"/>
+                </linearGradient>
+            </defs>
+            <!-- Topo -->
+            <polygon points="46,22 104,28 78,48 20,42" fill="url(#parTop)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Frente -->
+            <polygon points="20,42 78,48 78,92 20,86" fill="url(#parFront)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Lateral Direita -->
+            <polygon points="78,48 104,28 104,72 78,92" fill="url(#parSide)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>` 
+    },
+    { 
+        name: 'Prisma triangular', 
+        type: '3D', 
+        image: '../imagens/geometria/prisma_triangular.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="prmTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8"/>
+                    <stop offset="100%" stop-color="#0ea5e9"/>
+                </linearGradient>
+                <linearGradient id="prmSide" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#0369a1"/>
+                </linearGradient>
+            </defs>
+            <!-- Face superior inclinada -->
+            <polygon points="24,54 64,18 96,44 56,80" fill="url(#prmTop)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Face triangular frontal -->
+            <polygon points="24,54 56,80 24,96" fill="url(#prmSide)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Lateral inferior -->
+            <polygon points="56,80 96,44 96,62 56,98" fill="#0369a1" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="24,96 56,98 96,62" fill="#075985" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>` 
+    },
+    { 
+        name: 'Prisma pentagonal', 
+        type: '3D', 
+        image: '../imagens/geometria/prisma_pentagonal.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="pntTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#7dd3fc"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+                <linearGradient id="pntFront1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#0369a1"/>
+                </linearGradient>
+            </defs>
+            <!-- Topo Pentagonal -->
+            <polygon points="40,28 72,20 94,42 76,64 36,54" fill="url(#pntTop)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Faces laterais verticais -->
+            <polygon points="36,54 76,64 76,96 36,86" fill="url(#pntFront1)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="76,64 94,42 94,74 76,96" fill="#0369a1" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>` 
+    },
+    { 
+        name: 'Prisma hexagonal', 
+        type: '3D', 
+        image: '../imagens/geometria/prisma_hexagonal.png',
+        svg: `<svg viewBox="0 0 120 120" class="geometry-svg">
+            <defs>
+                <linearGradient id="hexTopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#7dd3fc"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+                <linearGradient id="hexFront1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#0369a1"/>
+                </linearGradient>
+                <linearGradient id="hexFront2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0369a1"/>
+                    <stop offset="100%" stop-color="#075985"/>
+                </linearGradient>
+            </defs>
+            <!-- Topo Hexagonal -->
+            <polygon points="36,28 66,20 92,34 88,54 58,62 32,50" fill="url(#hexTopGrad)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Lateral 1 -->
+            <polygon points="32,50 58,62 58,94 32,82" fill="url(#hexFront1)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Lateral 2 -->
+            <polygon points="58,62 88,54 88,86 58,94" fill="url(#hexFront2)" stroke="#e0f2fe" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>` 
+    }
 ];
+
+// Cada figura mantém o link para busca caso o usuário queira pesquisar
+shapes2D3D.forEach((shape) => {
+    const searchTerms = `${shape.name} ${shape.type} geometria matemática sólido`;
+    shape.googleUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(searchTerms)}`;
+});
 
 function renderGeometriaQuestion(container) {
     const selectedShape = shapes2D3D[Math.floor(Math.random() * shapes2D3D.length)];
@@ -238,11 +532,28 @@ function renderGeometriaQuestion(container) {
     title.textContent = questionText;
     container.appendChild(title);
 
-    // Box para renderizar a figura geométrica
+    // Box para renderizar a figura com foto real e fallback
     const displayBox = document.createElement('div');
     displayBox.className = 'geometry-display-box';
-    displayBox.innerHTML = selectedShape.svg;
+
+    displayBox.innerHTML = `
+        <img src="${selectedShape.image}" 
+             alt="${selectedShape.name}" 
+             class="geometry-img"
+             onerror="this.style.display='none'; if (this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+        <div class="geometry-svg-fallback" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">
+            ${selectedShape.svg}
+        </div>
+    `;
     container.appendChild(displayBox);
+
+    const referenceLink = document.createElement('a');
+    referenceLink.className = 'geometry-reference-link';
+    referenceLink.href = selectedShape.googleUrl;
+    referenceLink.target = '_blank';
+    referenceLink.rel = 'noopener noreferrer';
+    referenceLink.textContent = `Pesquisar "${selectedShape.name}" no Google Imagens ↗`;
+    container.appendChild(referenceLink);
 
     // Renderizar 2 Opções (Verdadeiro ou Falso)
     const tfContainer = document.createElement('div');

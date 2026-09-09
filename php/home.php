@@ -155,12 +155,6 @@ $porcentagem_xp = round(($xp_atual / $xp_proximo) * 100);
                 </div>
             </div>
 
-            <div class="hero-visual-badge">
-                <div class="hero-streak-card">
-                    <div class="streak-number">7</div>
-                    <div class="streak-label">Dias de Ofensiva</div>
-                </div>
-            </div>
         </section>
 
         <!-- SEÇÃO: MÓDULOS PRINCIPAIS DA APLICAÇÃO -->

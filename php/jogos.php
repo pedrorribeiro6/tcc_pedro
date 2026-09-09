@@ -144,6 +144,6 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
 
     <!-- Script do Motor dos Jogos -->
     <script src="../js/theme.js?v=3"></script>
-    <script src="../js/games.js"></script>
+    <script src="../js/games.js?v=<?= time(); ?>"></script>
 </body>
 </html>
