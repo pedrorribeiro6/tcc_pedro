@@ -404,6 +404,78 @@
     opacity: 0.85;
 }
 
+/* Display das Equações de Frações */
+.fraction-calc-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 25px auto 30px auto;
+    padding: 24px 36px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(0, 168, 255, 0.35);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    width: fit-content;
+    max-width: 100%;
+}
+
+.fraction-item {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    min-width: 52px;
+}
+
+.fraction-item .num {
+    display: block;
+    text-align: center;
+    padding: 2px 8px;
+    color: #fbbf24;
+}
+
+.fraction-item .bar {
+    display: block;
+    width: 100%;
+    min-width: 44px;
+    height: 4px;
+    background: #00a8ff;
+    border-radius: 2px;
+    margin: 4px 0;
+}
+
+.fraction-item .den {
+    display: block;
+    text-align: center;
+    padding: 2px 8px;
+    color: #38bdf8;
+}
+
+.fraction-item.fraction-result .num {
+    color: #34d399;
+}
+
+.fraction-item.fraction-result .bar {
+    background: #10b981;
+}
+
+.fraction-item.fraction-result .den {
+    color: #6ee7b7;
+}
+
+.fraction-operator {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #00a8ff;
+    user-select: none;
+}
+
 .true-false-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -669,4 +741,40 @@ html[data-theme='light'] .stat-timer-pill {
     background: rgba(245, 158, 11, 0.12);
     border-color: rgba(245, 158, 11, 0.3);
 }
+
+/* Tema Claro para Frações */
+html[data-theme='light'] .fraction-calc-display {
+    background: #ffffff;
+    border-color: rgba(2, 132, 199, 0.35);
+    box-shadow: 0 10px 25px rgba(2, 132, 199, 0.12);
+}
+
+html[data-theme='light'] .fraction-item .num {
+    color: #b45309;
+}
+
+html[data-theme='light'] .fraction-item .bar {
+    background: #0284c7;
+}
+
+html[data-theme='light'] .fraction-item .den {
+    color: #0369a1;
+}
+
+html[data-theme='light'] .fraction-item.fraction-result .num {
+    color: #047857;
+}
+
+html[data-theme='light'] .fraction-item.fraction-result .bar {
+    background: #059669;
+}
+
+html[data-theme='light'] .fraction-item.fraction-result .den {
+    color: #065f46;
+}
+
+html[data-theme='light'] .fraction-operator {
+    color: #0284c7;
+}
+
 

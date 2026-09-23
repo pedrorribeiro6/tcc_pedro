@@ -1,18 +1,53 @@
 <?php
 
 session_start();
+require_once 'conexao.php';
 
 $mensagem_erro = '';
-$mensagem_sucesso = '';
 
-if (isset($_SESSION['sucesso'])) {
-    $mensagem_sucesso = $_SESSION['sucesso'];
-    unset($_SESSION['sucesso']);
+// Processa o envio do formulário de cadastro
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nome           = trim($_POST['cad_nome']    ?? '');
+    $email          = trim($_POST['cad_email']   ?? '');
+    $senha          = $_POST['cad_senha']          ?? '';
+    $confirma_senha = $_POST['cad_confirma_senha'] ?? '';
+
+    // Validações básicas
+    if (empty($nome) || empty($email) || empty($senha)) {
+        $mensagem_erro = 'Preencha todos os campos obrigatórios.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $mensagem_erro = 'O e-mail informado não é válido.';
+    } elseif (strlen($senha) < 6) {
+        $mensagem_erro = 'A senha deve ter no mínimo 6 caracteres.';
+    } elseif ($senha !== $confirma_senha) {
+        $mensagem_erro = 'As senhas não coincidem.';
+    } elseif ($pdo) {
+        try {
+            // Verifica se o e-mail já está cadastrado
+            $check = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email LIMIT 1");
+            $check->execute(['email' => $email]);
+
+            if ($check->fetch()) {
+                $mensagem_erro = 'Este e-mail já está cadastrado. Faça login ou use outro e-mail.';
+            } else {
+                $hash = password_hash($senha, PASSWORD_BCRYPT);
+                $stmt = $pdo->prepare(
+                    "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)"
+                );
+                $stmt->execute(['nome' => $nome, 'email' => $email, 'senha' => $hash]);
+
+                header('Location: index.php');
+                exit;
+            }
+        } catch (PDOException $e) {
+            error_log('Erro ao cadastrar usuário: ' . $e->getMessage());
+            $mensagem_erro = 'Erro técnico: ' . $e->getMessage();
+        }
+    } else {
+        $mensagem_erro = 'Não foi possível conectar ao banco de dados. Verifique o servidor.';
+    }
 }
-if (isset($_SESSION['erro'])) {
-    $mensagem_erro = $_SESSION['erro'];
-    unset($_SESSION['erro']);
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -77,15 +112,6 @@ if (isset($_SESSION['erro'])) {
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($mensagem_sucesso)): ?>
-                <div class="alert-box alert-success">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                    <span><?= htmlspecialchars($mensagem_sucesso); ?></span>
-                </div>
-            <?php endif; ?>
 
             
             <form action="cadastro.php" method="POST" class="auth-form" id="formCadastro">

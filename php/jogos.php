@@ -20,6 +20,7 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
     
     <!-- Estilos do Projeto -->
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/games.css?v=<?= time(); ?>">
 </head>
 <body class="app-body">
 

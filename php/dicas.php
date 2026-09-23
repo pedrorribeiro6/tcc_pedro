@@ -237,24 +237,7 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
                     Fórmulas fundamentais para determinar a superfície de figuras no plano e a capacidade volumétrica de sólidos tridimensionais.
                 </p>
 
-                <div class="geometry-images-panel" id="geometryImagesPanel">
-                    <div class="geometry-images-heading">
-                        <div>
-                            <h3>Galeria de figuras</h3>
-                            <p>Consulte imagens de referência para visualizar cada forma.</p>
-                        </div>
-                        <div class="geometry-images-controls">
-                            <label for="geometryImageType">Tipo de figura</label>
-                            <select id="geometryImageType">
-                                <option value="2d">2D: figuras planas</option>
-                                <option value="3d">3D: sólidos geométricos</option>
-                            </select>
-                            <button type="button" id="searchGeometryImages">Buscar imagens</button>
-                        </div>
-                    </div>
-                    <div class="geometry-images-status" id="geometryImagesStatus" role="status">Selecione um tipo para carregar imagens.</div>
-                    <div class="geometry-images-grid" id="geometryImagesGrid"></div>
-                </div>
+
 
                 <div class="formula-cards-grid">
                     <div class="formula-detail-card">
@@ -370,13 +353,6 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
                     </div>
 
                     <div class="formula-detail-card">
-                        <div class="formula-card-header">Volume da Pirâmide Quadrangular</div>
-                        <div class="math-expr-box">V = (Aᵦ · h) / 3</div>
-                        <p class="formula-desc-text">Multiplique a área da base quadrada (Aᵦ) pela altura e divida por 3.</p>
-                        <div class="formula-example-box"><strong>Exemplo:</strong> Aᵦ = 25 cm² e h = 12 cm ➔ V = <strong>100 cm³</strong>.</div>
-                    </div>
-
-                    <div class="formula-detail-card">
                         <div class="formula-card-header">Volume do Paralelepípedo</div>
                         <div class="math-expr-box">V = c · l · h</div>
                         <p class="formula-desc-text">Multiplique o comprimento (c), a largura (l) e a altura (h).</p>
@@ -384,28 +360,28 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
                     </div>
 
                     <div class="formula-detail-card">
-                        <div class="formula-card-header">Volume do Cilindro Pentagonal</div>
+                        <div class="formula-card-header">Volume do Prisma Pentagonal</div>
                         <div class="math-expr-box">V = Aᵦ · h</div>
                         <p class="formula-desc-text">Calcule a área da base pentagonal (Aᵦ) e multiplique pela altura (h).</p>
                         <div class="formula-example-box"><strong>Exemplo:</strong> Aᵦ = 20 cm² e h = 8 cm ➔ V = <strong>160 cm³</strong>.</div>
                     </div>
 
                     <div class="formula-detail-card">
-                        <div class="formula-card-header">Volume do Cilindro Hexagonal</div>
+                        <div class="formula-card-header">Volume do Prisma Hexagonal</div>
                         <div class="math-expr-box">V = Aᵦ · h</div>
                         <p class="formula-desc-text">Calcule a área da base hexagonal (Aᵦ) e multiplique pela altura (h).</p>
                         <div class="formula-example-box"><strong>Exemplo:</strong> Aᵦ = 30 cm² e h = 6 cm ➔ V = <strong>180 cm³</strong>.</div>
                     </div>
 
                     <div class="formula-detail-card">
-                        <div class="formula-card-header">Volume do Cilindro Heptagonal</div>
+                        <div class="formula-card-header">Volume do Prisma Heptagonal</div>
                         <div class="math-expr-box">V = Aᵦ · h</div>
                         <p class="formula-desc-text">Calcule a área da base heptagonal (Aᵦ) e multiplique pela altura (h).</p>
                         <div class="formula-example-box"><strong>Exemplo:</strong> Aᵦ = 35 cm² e h = 4 cm ➔ V = <strong>140 cm³</strong>.</div>
                     </div>
 
                     <div class="formula-detail-card">
-                        <div class="formula-card-header">Volume do Cilindro Octagonal</div>
+                        <div class="formula-card-header">Volume do Prisma Octagonal</div>
                         <div class="math-expr-box">V = Aᵦ · h</div>
                         <p class="formula-desc-text">Calcule a área da base octagonal (Aᵦ) e multiplique pela altura (h).</p>
                         <div class="formula-example-box"><strong>Exemplo:</strong> Aᵦ = 40 cm² e h = 3 cm ➔ V = <strong>120 cm³</strong>.</div>
@@ -452,40 +428,98 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
                 </div>
             </div>
 
-            <!-- MATÉRIA 5: FRAÇÕES & PORCENTAGEM -->
+            <!-- MATÉRIA 5: OPERAÇÕES COM FRAÇÕES -->
             <div class="formula-tab-content" id="tab-fracoes">
-                <h2 class="formula-category-title">Frações, Porcentagem e Regra de Três</h2>
+                <h2 class="formula-category-title">Operações com Frações</h2>
                 <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.6;">
-                    Conceitos essenciais para a matemática do dia a dia e resolução rápida de problemas financeiros.
+                    Aprenda a somar, subtrair, multiplicar e dividir frações com denominadores iguais e diferentes. Dominar frações é a chave para avançar na matemática!
                 </p>
 
                 <div class="formula-cards-grid">
+
+                    <!-- ADIÇÃO -->
                     <div class="formula-detail-card">
-                        <div class="formula-card-header">
-                            Adição com Denominadores Diferentes
-                        </div>
-                        <div class="math-expr-box">(a/b) + (c/d) ➔ Usa MMC</div>
+                        <div class="formula-card-header">➕ Adição de Frações</div>
+                        <div class="math-expr-box">a/b + c/b = (a + c) / b</div>
                         <p class="formula-desc-text">
-                            Encontre o MMC dos denominadores, divida pelo de baixo e multiplique pelo de cima!
+                            <strong>Denominadores iguais:</strong> Mantenha o denominador e some apenas os numeradores.<br><br>
+                            <strong>Denominadores diferentes:</strong> Calcule o MMC dos denominadores, transforme as frações equivalentes e então some os numeradores.
                         </p>
                         <div class="formula-example-box">
-                            <strong>Exemplo:</strong> 1/2 + 1/3 ➔ MMC(2,3) = 6:<br>
-                            (3 + 2)/6 = <strong>5/6</strong>.
+                            <strong>Exemplo (iguais):</strong> 2/7 + 3/7 = <strong>5/7</strong>.<br><br>
+                            <strong>Exemplo (diferentes):</strong> 1/4 + 1/6 ➔ MMC(4, 6) = 12<br>
+                            (3/12) + (2/12) = <strong>5/12</strong>.
                         </div>
                     </div>
 
+                    <!-- SUBTRAÇÃO -->
                     <div class="formula-detail-card">
-                        <div class="formula-card-header">
-                            <span>%</span> Cálculo Prático de Porcentagens
-                        </div>
-                        <div class="math-expr-box">X% de N = (X · N) / 100</div>
+                        <div class="formula-card-header">➖ Subtração de Frações</div>
+                        <div class="math-expr-box">a/b - c/b = (a - c) / b</div>
                         <p class="formula-desc-text">
-                            Multiplica-se a porcentagem pelo número e divide-se por 100.
+                            <strong>Denominadores iguais:</strong> Mantenha o denominador e subtraia os numeradores.<br><br>
+                            <strong>Denominadores diferentes:</strong> Iguale os denominadores usando o MMC e depois subtraia os numeradores.
                         </p>
                         <div class="formula-example-box">
-                            <strong>Dica Mental:</strong> 10% de 250 = 25. Para achar 20%, basta dobrar (25 · 2 = <strong>50</strong>)!
+                            <strong>Exemplo (iguais):</strong> 5/9 - 2/9 = <strong>3/9 = 1/3</strong>.<br><br>
+                            <strong>Exemplo (diferentes):</strong> 3/4 - 1/3 ➔ MMC(4, 3) = 12<br>
+                            (9/12) - (4/12) = <strong>5/12</strong>.
                         </div>
                     </div>
+
+                    <!-- MULTIPLICAÇÃO -->
+                    <div class="formula-detail-card">
+                        <div class="formula-card-header">✖️ Multiplicação de Frações</div>
+                        <div class="math-expr-box">(a/b) · (c/d) = (a · c) / (b · d)</div>
+                        <p class="formula-desc-text">
+                            Multiplique numerador com numerador e denominador com denominador. Não é necessário igualar os denominadores!
+                        </p>
+                        <div class="formula-example-box">
+                            <strong>Exemplo:</strong> (2/3) · (3/4) = (2 · 3) / (3 · 4) = 6/12 = <strong>1/2</strong>.<br><br>
+                            <strong>Dica:</strong> Simplifique em cruz antes de multiplicar para evitar números grandes!<br>
+                            2/3 · 3/4 ➔ cancela o 3 ➔ 2/1 · 1/4 = <strong>2/4 = 1/2</strong>.
+                        </div>
+                    </div>
+
+                    <!-- DIVISÃO -->
+                    <div class="formula-detail-card">
+                        <div class="formula-card-header">➗ Divisão de Frações</div>
+                        <div class="math-expr-box">(a/b) ÷ (c/d) = (a/b) · (d/c)</div>
+                        <p class="formula-desc-text">
+                            Mantenha a primeira fração, troque a operação por multiplicação e inverta (vire) a segunda fração (numerador e denominador trocam de lugar).
+                        </p>
+                        <div class="formula-example-box">
+                            <strong>Exemplo:</strong> (3/4) ÷ (2/5) = (3/4) · (5/2) = 15/8 = <strong>1 e 7/8</strong>.<br><br>
+                            <strong>Macete:</strong> "Mantenha, Mude, Inverta" — Keep, Change, Flip!
+                        </div>
+                    </div>
+
+                    <!-- SIMPLIFICAÇÃO -->
+                    <div class="formula-detail-card">
+                        <div class="formula-card-header">🔢 Simplificação de Frações</div>
+                        <div class="math-expr-box">a/b ➔ (a ÷ MDC) / (b ÷ MDC)</div>
+                        <p class="formula-desc-text">
+                            Encontre o Máximo Divisor Comum (MDC) entre numerador e denominador e divida ambos por ele até obter a fração irredutível.
+                        </p>
+                        <div class="formula-example-box">
+                            <strong>Exemplo:</strong> 12/18 ➔ MDC(12, 18) = 6<br>
+                            12 ÷ 6 = 2 e 18 ÷ 6 = 3 ➔ fração simplificada: <strong>2/3</strong>.
+                        </div>
+                    </div>
+
+                    <!-- FRAÇÕES EQUIVALENTES -->
+                    <div class="formula-detail-card">
+                        <div class="formula-card-header">🔄 Frações Equivalentes</div>
+                        <div class="math-expr-box">a/b = (a · k) / (b · k)</div>
+                        <p class="formula-desc-text">
+                            Multiplique ou divida numerador e denominador pelo mesmo número (k ≠ 0) para obter uma fração equivalente com o mesmo valor.
+                        </p>
+                        <div class="formula-example-box">
+                            <strong>Exemplo:</strong> 1/2 = 2/4 = 3/6 = 4/8 — todas têm o mesmo valor!<br><br>
+                            <strong>Dica:</strong> Essa técnica é fundamental para igualar denominadores na adição e subtração.
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

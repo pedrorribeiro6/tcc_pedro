@@ -1,31 +1,86 @@
-CREATE DATABASE IF NOT EXISTS `the_mathematical_game` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `the_mathematical_game`;
+CREATE DATABASE IF NOT EXISTS `banco_tcc`
+    DEFAULT CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 
--- Tabela de Usuários com suporte a Login Tradicional e Google OAuth
+USE `banco_tcc`;
+
 CREATE TABLE IF NOT EXISTS `usuarios` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `nome` VARCHAR(150) NOT NULL,
-    `email` VARCHAR(190) NOT NULL UNIQUE,
-    `senha` VARCHAR(255) NULL, -- Nulo quando o login for exclusivamente via Google
-    `google_id` VARCHAR(100) NULL UNIQUE, -- ID único retornado pela Google API
-    `foto_perfil` VARCHAR(255) NULL,
-    `nivel` INT DEFAULT 1,
-    `pontos` INT DEFAULT 0,
-    `criado_em` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `atualizado_em` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `id`            INT UNSIGNED    NOT NULL AUTO_INCREMENT,
+    `nome`          VARCHAR(150)    NOT NULL,
+    `email`         VARCHAR(190)    NOT NULL,
+    `senha`         VARCHAR(255)    NULL        DEFAULT NULL,
+    `google_id`     VARCHAR(100)    NULL        DEFAULT NULL,
+    `foto_perfil`   VARCHAR(255)    NULL        DEFAULT NULL,
+    `nivel`         INT UNSIGNED    NOT NULL    DEFAULT 1,
+    `pontos`        INT UNSIGNED    NOT NULL    DEFAULT 0,
+    `criado_em`     TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP,
+    `atualizado_em` TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP
+                                                ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_email`     (`email`),
+    UNIQUE KEY `uq_google_id` (`google_id`)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
--- Tabela de Histórico de Partidas
 CREATE TABLE IF NOT EXISTS `historico_partidas` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `usuario_id` INT NOT NULL,
-    `modo_jogo` VARCHAR(100) NOT NULL,
-    `resultado` VARCHAR(50) NOT NULL,
-    `pontos_ganhos` INT DEFAULT 0,
-    `precisao_porcentagem` INT DEFAULT 0,
-    `acertos` INT DEFAULT 0,
-    `total_questoes` INT DEFAULT 0,
-    `data_partida` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `id`                   INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+    `usuario_id`           INT UNSIGNED      NOT NULL,
+    `modo_jogo`            VARCHAR(100)      NOT NULL,
+    `resultado`            VARCHAR(50)       NOT NULL   DEFAULT 'Concluído',
+    `pontos_ganhos`        INT UNSIGNED      NOT NULL   DEFAULT 0,
+    `precisao_porcentagem` TINYINT UNSIGNED  NOT NULL   DEFAULT 0,
+    `acertos`              SMALLINT UNSIGNED NOT NULL   DEFAULT 0,
+    `total_questoes`       SMALLINT UNSIGNED NOT NULL   DEFAULT 0,
+    `data_partida`         TIMESTAMP         NOT NULL   DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_historico_usuario`
+        FOREIGN KEY (`usuario_id`)
+        REFERENCES `usuarios` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    INDEX `idx_usuario_data` (`usuario_id`, `data_partida` DESC)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
+INSERT IGNORE INTO `usuarios` (`nome`, `email`, `senha`, `nivel`, `pontos`) VALUES
+(
+    'Pedro Demo',
+    'demo@thematematicalgame.com',
+    '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+    3,
+    2750
+);
+
+INSERT IGNORE INTO `historico_partidas`
+    (`usuario_id`, `modo_jogo`, `resultado`, `pontos_ganhos`, `precisao_porcentagem`, `acertos`, `total_questoes`)
+VALUES
+    (1, 'Desafio Matemático', 'Vitória',   150, 80, 8, 10),
+    (1, 'Contra o Tempo',    'Vitória',   200, 90, 9, 10),
+    (1, 'Desafio Matemático', 'Derrota',   50, 40, 4, 10),
+    (1, 'Tabuada Rápida',    'Concluído', 100, 70, 7, 10);
+
+CREATE OR REPLACE VIEW `vw_ranking` AS
+    SELECT
+        `id`,
+        `nome`,
+        `foto_perfil`,
+        `nivel`,
+        `pontos`,
+        RANK() OVER (ORDER BY `pontos` DESC) AS `posicao`
+    FROM `usuarios`
+    ORDER BY `pontos` DESC;
+
+CREATE OR REPLACE VIEW `vw_estatisticas_usuario` AS
+    SELECT
+        u.`id`                                                AS usuario_id,
+        u.`nome`,
+        COUNT(h.`id`)                                         AS total_partidas,
+        COALESCE(SUM(h.`pontos_ganhos`), 0)                  AS total_pontos_partidas,
+        COALESCE(ROUND(AVG(h.`precisao_porcentagem`), 1), 0) AS media_precisao,
+        COALESCE(SUM(h.`acertos`), 0)                        AS total_acertos,
+        COALESCE(SUM(h.`total_questoes`), 0)                 AS total_questoes
+    FROM `usuarios` u
+    LEFT JOIN `historico_partidas` h ON h.`usuario_id` = u.`id`
+    GROUP BY u.`id`, u.`nome`;

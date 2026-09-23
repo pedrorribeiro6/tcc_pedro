@@ -175,6 +175,15 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
                     </a>
                 </article>
 
+                <!-- Card 6: Frações -->
+                <article class="game-card">
+                    <h3 class="game-card-title">Operações com Frações</h3>
+                    <p class="game-card-desc">Pratique adição, subtração, multiplicação e divisão de frações com denominadores iguais no formato Verdadeiro ou Falso.</p>
+                    <a href="jogos.php?game=fracoes" class="btn-play-card">
+                        <span>Jogar Frações</span>
+                    </a>
+                </article>
+
             </div>
         </section>
 

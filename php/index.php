@@ -3,7 +3,6 @@ session_start();
 require_once 'conexao.php';
 
 $mensagem_erro = '';
-$mensagem_sucesso = '';
 
 // Se já estiver logado, redireciona para a tela inicial (home.php)
 if (isset($_SESSION['usuario_nome'])) {
@@ -15,58 +14,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['login_email']) && !empty($_POST['login_senha'])) {
         $loginInput = trim($_POST['login_email']);
         $senhaInput = trim($_POST['login_senha']);
-        
+
         if ($pdo) {
             try {
-                $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email OR nome = :nome LIMIT 1");
-                $stmt->execute(['email' => $loginInput, 'nome' => $loginInput]);
+                $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email LIMIT 1");
+                $stmt->execute(['email' => $loginInput]);
                 $usuario = $stmt->fetch();
-                
+
                 if ($usuario && !empty($usuario['senha']) && password_verify($senhaInput, $usuario['senha'])) {
-                    $_SESSION['usuario_id'] = $usuario['id'];
-                    $_SESSION['usuario_nome'] = $usuario['nome'];
-                    $_SESSION['usuario_email'] = $usuario['email'];
+                    $_SESSION['usuario_id']     = $usuario['id'];
+                    $_SESSION['usuario_nome']   = $usuario['nome'];
+                    $_SESSION['usuario_email']  = $usuario['email'];
                     $_SESSION['usuario_pontos'] = $usuario['pontos'] ?? 0;
-                    $_SESSION['usuario_nivel'] = floor($_SESSION['usuario_pontos'] / 1000);
-                    $_SESSION['usuario_foto'] = $usuario['foto_perfil'] ?: '../imagens/logo_matematico.png';
+                    $_SESSION['usuario_nivel']  = floor($_SESSION['usuario_pontos'] / 1000);
+                    $_SESSION['usuario_foto']   = $usuario['foto_perfil'] ?: '../imagens/logo_matematico.png';
                     header('Location: home.php');
                     exit;
                 } else {
-                    // Modo demonstrativo caso o usuário ainda não exista no banco local
-                    $_SESSION['usuario_nome'] = ucfirst(explode('@', $loginInput)[0]);
-                    $_SESSION['usuario_email'] = $loginInput;
-                    $_SESSION['usuario_nivel'] = 1;
-                    $_SESSION['usuario_pontos'] = 150;
-                    header('Location: home.php');
-                    exit;
+                    $mensagem_erro = 'E-mail ou senha incorretos. Tente novamente.';
                 }
             } catch (PDOException $e) {
-                $mensagem_erro = 'Erro no servidor. Redirecionando em modo offline...';
-                $_SESSION['usuario_nome'] = ucfirst(explode('@', $loginInput)[0]);
-                $_SESSION['usuario_email'] = $loginInput;
-                header('Location: home.php');
-                exit;
+                error_log('Erro no login: ' . $e->getMessage());
+                $mensagem_erro = 'Erro no servidor. Tente novamente em instantes.';
             }
         } else {
-            // Conexão offline ou sem DB rodando no momento
-            $_SESSION['usuario_nome'] = ucfirst(explode('@', $loginInput)[0]);
-            $_SESSION['usuario_email'] = $loginInput;
-            $_SESSION['usuario_nivel'] = 1;
-            $_SESSION['usuario_pontos'] = 150;
-            header('Location: home.php');
-            exit;
+            $mensagem_erro = 'Não foi possível conectar ao banco de dados. Verifique o servidor.';
         }
     }
 }
 
-if (isset($_SESSION['sucesso'])) {
-    $mensagem_sucesso = $_SESSION['sucesso'];
-    unset($_SESSION['sucesso']);
-}
-if (isset($_SESSION['erro'])) {
-    $mensagem_erro = $_SESSION['erro'];
-    unset($_SESSION['erro']);
-}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -133,15 +109,6 @@ if (isset($_SESSION['erro'])) {
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($mensagem_sucesso)): ?>
-                <div class="alert-box alert-success">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                    <span><?= htmlspecialchars($mensagem_sucesso); ?></span>
-                </div>
-            <?php endif; ?>
 
            
             <form action="index.php" method="POST" class="auth-form" id="formLogin">
