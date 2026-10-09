@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
     `senha`         VARCHAR(255)    NULL        DEFAULT NULL,
     `google_id`     VARCHAR(100)    NULL        DEFAULT NULL,
     `foto_perfil`   VARCHAR(255)    NULL        DEFAULT NULL,
+    `banner_perfil` VARCHAR(255)    NULL        DEFAULT NULL,
     `nivel`         INT UNSIGNED    NOT NULL    DEFAULT 1,
     `pontos`        INT UNSIGNED    NOT NULL    DEFAULT 0,
     `criado_em`     TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP,

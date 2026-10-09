@@ -270,6 +270,99 @@
     overflow: hidden;
 }
 
+/* Botão de Tempo Extra (+10s) - Exclusivo Modo Difícil */
+.btn-extra-time {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.22), rgba(245, 158, 11, 0.28));
+    border: 1px solid rgba(245, 158, 11, 0.55);
+    border-radius: var(--radius-full);
+    color: #fef08a;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+    z-index: 10;
+}
+
+.btn-extra-time:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.35), rgba(245, 158, 11, 0.42));
+    border-color: #f59e0b;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+}
+
+.btn-extra-time:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-extra-time:disabled,
+.btn-extra-time.used {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: var(--color-text-muted);
+    box-shadow: none;
+    transform: none;
+}
+
+.btn-extra-time-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.btn-extra-time-label {
+    letter-spacing: 0.02em;
+}
+
+.btn-extra-time-badge {
+    background: rgba(239, 68, 68, 0.3);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.btn-extra-time.used .btn-extra-time-badge {
+    background: rgba(148, 163, 184, 0.15);
+    border-color: rgba(148, 163, 184, 0.25);
+    color: #94a3b8;
+}
+
+@keyframes timerPulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 rgba(245, 158, 11, 0.7); }
+    50% { transform: scale(1.15); box-shadow: 0 0 16px rgba(245, 158, 11, 0.95); }
+    100% { transform: scale(1); box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+.timer-boost-pulse {
+    animation: timerPulse 0.8s ease-out;
+}
+
+@media (max-width: 640px) {
+    .btn-extra-time {
+        top: 14px;
+        right: 14px;
+        padding: 5px 10px;
+        font-size: 0.78rem;
+    }
+    .btn-extra-time-badge {
+        display: none;
+    }
+}
+
 .question-step-tag {
     display: inline-block;
     font-size: 0.82rem;
@@ -532,19 +625,81 @@
 }
 
 /* Plano Cartesiano Interativo */
+.cartesiano-header-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    width: 100%;
+}
+
 .cartesiano-instruction-card {
     background: rgba(0, 168, 255, 0.12);
     border: 1px solid rgba(0, 168, 255, 0.3);
     border-radius: var(--radius-md);
-    padding: 14px 20px;
-    margin-bottom: 20px;
-    display: flex;
+    padding: 12px 24px;
+    margin-bottom: 0;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 14px;
     font-size: 1.15rem;
     font-weight: 700;
     color: #ffffff;
+    box-shadow: 0 4px 18px rgba(0, 168, 255, 0.1);
+}
+
+html[data-theme='light'] .cartesiano-instruction-card {
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
+    color: #0f172a;
+    box-shadow: 0 4px 18px rgba(2, 132, 199, 0.08);
+}
+
+.cartesiano-hard-alert-banner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.38);
+    border-radius: var(--radius-full);
+    padding: 7px 20px;
+    font-size: 0.88rem;
+    color: #fef08a;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
+}
+
+.cartesiano-hard-alert-banner .hard-alert-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.cartesiano-hard-alert-banner .hard-alert-text {
+    line-height: 1.4;
+}
+
+.cartesiano-hard-alert-banner code {
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: #fef08a;
+}
+
+html[data-theme='light'] .cartesiano-hard-alert-banner {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(217, 119, 6, 0.42);
+    color: #92400e;
+    box-shadow: 0 2px 10px rgba(245, 158, 11, 0.1);
+}
+
+html[data-theme='light'] .cartesiano-hard-alert-banner code {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(217, 119, 6, 0.35);
+    color: #78350f;
 }
 
 .coord-target-badge {
@@ -579,6 +734,11 @@
 
 html[data-theme='light'] #cartesianoCanvas {
     background: #ffffff;
+}
+
+html[data-theme='light'] .cartesiano-canvas-wrapper {
+    box-shadow: 0 10px 30px rgba(2, 132, 199, 0.15);
+    border-color: #0284c7;
 }
 
 /* Modal de Resultado / Fim de Jogo */
@@ -742,6 +902,21 @@ html[data-theme='light'] .stat-timer-pill {
     border-color: rgba(245, 158, 11, 0.3);
 }
 
+html[data-theme='light'] .btn-extra-time {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.18));
+    border-color: rgba(245, 158, 11, 0.6);
+    color: #9a3412;
+}
+html[data-theme='light'] .btn-extra-time:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(245, 158, 11, 0.28));
+    border-color: #d97706;
+}
+html[data-theme='light'] .btn-extra-time-badge {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #b91c1c;
+}
+
 /* Tema Claro para Frações */
 html[data-theme='light'] .fraction-calc-display {
     background: #ffffff;
@@ -775,6 +950,403 @@ html[data-theme='light'] .fraction-item.fraction-result .den {
 
 html[data-theme='light'] .fraction-operator {
     color: #0284c7;
+}
+
+/* ==========================================================================
+   MODAL DE SELEÇÃO DE DIFICULDADE (CENTRALIZADO & TEMAS CLARO/ESCURO)
+   ========================================================================== */
+
+.diff-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 10, 20, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s ease;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.diff-modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.diff-modal-card {
+    background: linear-gradient(165deg, rgba(13, 31, 56, 0.96) 0%, rgba(7, 18, 34, 0.98) 100%);
+    border: 1px solid rgba(0, 168, 255, 0.22);
+    border-radius: 24px;
+    padding: 34px 28px;
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+    box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 168, 255, 0.1);
+    transform: scale(0.92) translateY(16px);
+    transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.diff-modal-overlay.show .diff-modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.diff-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    width: 36px;
+    height: 36px;
+    font-size: 1.4rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.diff-modal-close:hover {
+    color: #ffffff;
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+    transform: rotate(90deg);
+}
+
+.diff-modal-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.diff-modal-icon-badge {
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 12px;
+    border-radius: 16px;
+    background: rgba(0, 168, 255, 0.12);
+    border: 1px solid rgba(0, 168, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 0 20px rgba(0, 168, 255, 0.2);
+}
+
+.diff-modal-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+}
+
+.diff-modal-subtitle {
+    font-size: 0.86rem;
+    color: #00a8ff;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.diff-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.diff-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    background: rgba(255, 255, 255, 0.03);
+    position: relative;
+    overflow: hidden;
+}
+
+.diff-btn:hover {
+    transform: translateY(-2px);
+}
+
+.diff-btn:active {
+    transform: scale(0.985);
+}
+
+.diff-btn-icon-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.4rem;
+    transition: transform 0.2s ease;
+}
+
+.diff-btn:hover .diff-btn-icon-box {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+.diff-btn-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.diff-btn-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.diff-btn-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #f1f5f9;
+    letter-spacing: 0.01em;
+}
+
+.diff-xp-badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.diff-tags-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.diff-tag-pill {
+    font-size: 0.73rem;
+    font-weight: 600;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 2px 7px;
+    border-radius: 6px;
+}
+
+.diff-btn-chevron {
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.diff-btn:hover .diff-btn-chevron {
+    color: #ffffff;
+    transform: translateX(3px);
+}
+
+/* Fácil — Verde Esmeralda */
+.diff-btn--easy {
+    background: rgba(16, 185, 129, 0.06);
+    border-color: rgba(16, 185, 129, 0.25);
+}
+.diff-btn--easy .diff-btn-icon-box {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.diff-xp--easy {
+    background: rgba(16, 185, 129, 0.18);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+.diff-btn--easy:hover {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: #10b981;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.22);
+}
+
+/* Médio — Dourado / Âmbar */
+.diff-btn--medium {
+    background: rgba(245, 158, 11, 0.06);
+    border-color: rgba(245, 158, 11, 0.25);
+}
+.diff-btn--medium .diff-btn-icon-box {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.diff-xp--medium {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+.diff-btn--medium:hover {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: #f59e0b;
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.22);
+}
+
+/* Difícil — Vermelho / Fogo */
+.diff-btn--hard {
+    background: rgba(239, 68, 68, 0.06);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+.diff-btn--hard .diff-btn-icon-box {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.diff-xp--hard {
+    background: rgba(239, 68, 68, 0.18);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+}
+.diff-btn--hard:hover {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: #ef4444;
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.24);
+}
+
+/* ==========================================================================
+   BADGE DE DIFICULDADE NA ARENA DO JOGO
+   ========================================================================== */
+
+.difficulty-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.difficulty-badge--facil {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.difficulty-badge--medio {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.difficulty-badge--dificil {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* ==========================================================================
+   TEMA CLARO - AJUSTES DE ALTO CONTRASTE DO MODAL
+   ========================================================================== */
+
+html[data-theme='light'] .diff-modal-overlay {
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+html[data-theme='light'] .diff-modal-card {
+    background: linear-gradient(165deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(0, 168, 255, 0.25);
+    box-shadow: 0 25px 60px -10px rgba(15, 23, 42, 0.22), 0 0 30px rgba(0, 168, 255, 0.08);
+}
+
+html[data-theme='light'] .diff-modal-title {
+    color: #0f172a;
+}
+
+html[data-theme='light'] .diff-modal-subtitle {
+    color: #0284c7;
+}
+
+html[data-theme='light'] .diff-modal-close {
+    color: #64748b;
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme='light'] .diff-modal-close:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+html[data-theme='light'] .diff-btn-title {
+    color: #0f172a;
+}
+
+html[data-theme='light'] .diff-tag-pill {
+    background: rgba(15, 23, 42, 0.05);
+    color: #475569;
+    border-color: rgba(15, 23, 42, 0.08);
+}
+
+html[data-theme='light'] .diff-btn-chevron {
+    color: #94a3b8;
+}
+
+html[data-theme='light'] .diff-btn--easy {
+    background: rgba(16, 185, 129, 0.07);
+    border-color: rgba(16, 185, 129, 0.28);
+}
+html[data-theme='light'] .diff-btn--easy:hover {
+    background: rgba(16, 185, 129, 0.14);
+    border-color: #10b981;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.18);
+}
+
+html[data-theme='light'] .diff-btn--medium {
+    background: rgba(245, 158, 11, 0.07);
+    border-color: rgba(245, 158, 11, 0.28);
+}
+html[data-theme='light'] .diff-btn--medium:hover {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: #f59e0b;
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.18);
+}
+
+html[data-theme='light'] .diff-btn--hard {
+    background: rgba(239, 68, 68, 0.07);
+    border-color: rgba(239, 68, 68, 0.28);
+}
+html[data-theme='light'] .diff-btn--hard:hover {
+    background: rgba(239, 68, 68, 0.14);
+    border-color: #ef4444;
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.18);
 }
 
 

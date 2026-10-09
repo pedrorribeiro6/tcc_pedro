@@ -39,12 +39,14 @@ $novaPartida = [
     'data_partida' => date('d/m/Y H:i')
 ];
 
+require_once 'rank_helper.php';
+
 // Adiciona no início do histórico da sessão
 array_unshift($_SESSION['historico'], $novaPartida);
 
 // Atualiza os pontos na sessão
 $_SESSION['usuario_pontos'] = ($_SESSION['usuario_pontos'] ?? 2450) + $pontos_ganhos;
-$_SESSION['usuario_nivel'] = floor($_SESSION['usuario_pontos'] / 1000);
+$_SESSION['usuario_nivel'] = calcularNivel($_SESSION['usuario_pontos']);
 
 // Se houver conexão com o Banco de Dados e usuário autenticado, persiste na tabela
 if ($pdo && $usuario_id) {
@@ -76,10 +78,13 @@ if ($pdo && $usuario_id) {
     }
 }
 
+$rank_info = obterInfoRank($_SESSION['usuario_nivel'], $_SESSION['usuario_pontos']);
+
 echo json_encode([
     'success' => true,
     'novo_total_pontos' => $_SESSION['usuario_pontos'],
     'novo_nivel' => $_SESSION['usuario_nivel'],
+    'rank' => $rank_info,
     'precisao' => $precisao_porcentagem
 ]);
 exit;

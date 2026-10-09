@@ -6,12 +6,17 @@ function initThemeToggle() {
 
     if (!themeToggle) return;
 
+    if (themeToggle.dataset.themeBound === 'true') return;
+    themeToggle.dataset.themeBound = 'true';
+
     window.toggleTheme = () => {
-        const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+        const currentTheme = document.documentElement.dataset.theme || localStorage.getItem('theme') || 'dark';
+        const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
         localStorage.setItem('theme', nextTheme);
         applyTheme(nextTheme);
     };
 
+    themeToggle.removeEventListener('click', window.toggleTheme);
     themeToggle.addEventListener('click', window.toggleTheme);
 
     function applyTheme(theme) {

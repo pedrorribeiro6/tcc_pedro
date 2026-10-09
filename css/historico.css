@@ -2,6 +2,11 @@
    THE MATHEMATICAL GAME - HISTÓRICO DE PARTIDAS (HISTORICO.PHP)
    ========================================================================== */
 
+.history-page {
+    max-width: 1200px;
+    padding-top: 110px;
+}
+
 .history-card {
     background: var(--color-bg-card);
     backdrop-filter: blur(16px);

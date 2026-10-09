@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="hGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#115e59"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="url(#hGrad)" stroke="#2dd4bf" stroke-width="3"/>
+  <ellipse cx="60" cy="60" rx="36" ry="18" fill="none" stroke="#a7f3d0" stroke-width="2.5" transform="rotate(-25 60 60)"/>
+  <ellipse cx="60" cy="60" rx="36" ry="18" fill="none" stroke="#a7f3d0" stroke-width="2.5" transform="rotate(25 60 60)"/>
+  <circle cx="60" cy="60" r="10" fill="#ccfbf1" stroke="#0d9488" stroke-width="2"/>
+  <text x="60" y="104" font-family="'Outfit', sans-serif" font-size="12" font-weight="700" fill="#99f6e4" text-anchor="middle">HIPÁTIA</text>
+</svg>

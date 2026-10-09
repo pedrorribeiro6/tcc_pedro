@@ -17,13 +17,16 @@
 }
 
 .header-container {
-    max-width: 1280px;
+    max-width: 1340px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 12px 24px 12px 132px;
     height: 74px;
+    min-width: 0;
 }
 
 /* Logo do Header */
@@ -33,6 +36,7 @@
     gap: 12px;
     text-decoration: none;
     transition: var(--transition-smooth);
+    flex-shrink: 0;
 }
 
 .header-brand:hover {
@@ -57,6 +61,7 @@
 .header-brand-text .highlight {
     background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -64,50 +69,59 @@
 .header-nav {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
 }
 
 .nav-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 9px 16px;
+    gap: 7px;
+    height: 38px;
+    padding: 0 14px;
     color: var(--color-text-muted);
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     font-weight: 600;
     text-decoration: none;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-full, 9999px);
     border: 1px solid transparent;
-    transition: var(--transition-smooth);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
 }
 
 .nav-link svg {
+    flex-shrink: 0;
     transition: var(--transition-smooth);
 }
 
 .nav-link:hover {
     color: var(--color-text-title);
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
 .nav-link.active {
-    color: var(--color-text-title);
-    background: rgba(0, 168, 255, 0.15);
-    border-color: rgba(0, 168, 255, 0.35);
-    box-shadow: 0 0 15px rgba(0, 168, 255, 0.15);
+    color: var(--color-cyan-vibrant, #00a8ff);
+    background: rgba(0, 168, 255, 0.14);
+    border-color: rgba(0, 168, 255, 0.32);
+    box-shadow: 0 2px 10px rgba(0, 168, 255, 0.15);
+    font-weight: 700;
 }
 
 .nav-link.active svg {
-    color: var(--color-gold-light);
+    color: var(--color-cyan-vibrant, #00a8ff);
 }
 
 /* Área de Estatísticas e Perfil no Header */
 .header-user-actions {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 8px;
+    flex-shrink: 0;
+    min-width: 0;
 }
 
 .app-header .theme-toggle {
@@ -149,11 +163,120 @@
 .user-stats-pill {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     background: rgba(11, 30, 54, 0.8);
     border: 1px solid var(--color-border-subtle);
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: var(--radius-full);
+}
+
+/* Badge de Elo / Rank no Header */
+.stat-rank {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.02em;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    transition: all 0.25s ease;
+}
+
+.stat-rank .rank-icon,
+.stat-rank .rank-icon-mini {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.stat-rank .rank-name-text {
+    font-size: 0.82rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Cores dos Elos */
+.rank-badge--bronze {
+    color: #fdba74;
+    background: rgba(205, 127, 50, 0.18);
+    border: 1px solid rgba(205, 127, 50, 0.4);
+}
+.rank-badge--prata {
+    color: #e2e8f0;
+    background: rgba(148, 163, 184, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+}
+.rank-badge--ouro {
+    color: #fef08a;
+    background: rgba(251, 191, 36, 0.2);
+    border: 1px solid rgba(251, 191, 36, 0.5);
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.15);
+}
+.rank-badge--platina {
+    color: #7dd3fc;
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
+}
+.rank-badge--diamante {
+    color: #e9d5ff;
+    background: rgba(192, 132, 252, 0.2);
+    border: 1px solid rgba(192, 132, 252, 0.5);
+    box-shadow: 0 0 12px rgba(192, 132, 252, 0.2);
+}
+.rank-badge--lendario {
+    color: #fecdd3;
+    background: rgba(244, 63, 94, 0.2);
+    border: 1px solid rgba(244, 63, 94, 0.5);
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.22);
+}
+.rank-badge--mestre {
+    color: #fef9c3;
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.28), rgba(244, 63, 94, 0.28));
+    border: 1px solid rgba(234, 179, 8, 0.6);
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.3);
+}
+
+/* Tema Claro para os Badges */
+html[data-theme='light'] .user-stats-pill {
+    background: rgba(248, 250, 252, 0.9);
+    border-color: rgba(148, 163, 184, 0.25);
+}
+html[data-theme='light'] .rank-badge--bronze {
+    color: #9a3412;
+    background: rgba(205, 127, 50, 0.14);
+    border-color: rgba(205, 127, 50, 0.45);
+}
+html[data-theme='light'] .rank-badge--prata {
+    color: #334155;
+    background: rgba(100, 116, 139, 0.14);
+    border-color: rgba(100, 116, 139, 0.4);
+}
+html[data-theme='light'] .rank-badge--ouro {
+    color: #b45309;
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.5);
+}
+html[data-theme='light'] .rank-badge--platina {
+    color: #0369a1;
+    background: rgba(2, 132, 199, 0.14);
+    border-color: rgba(2, 132, 199, 0.45);
+}
+html[data-theme='light'] .rank-badge--diamante {
+    color: #7e22ce;
+    background: rgba(168, 85, 247, 0.14);
+    border-color: rgba(168, 85, 247, 0.45);
+}
+html[data-theme='light'] .rank-badge--lendario {
+    color: #be123c;
+    background: rgba(244, 63, 94, 0.14);
+    border-color: rgba(244, 63, 94, 0.45);
+}
+html[data-theme='light'] .rank-badge--mestre {
+    color: #854d0e;
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(244, 63, 94, 0.2));
+    border-color: rgba(234, 179, 8, 0.55);
 }
 
 html[data-theme='light'] .app-header {
@@ -167,20 +290,21 @@ html[data-theme='light'] .nav-link {
 }
 
 html[data-theme='light'] .nav-link:hover {
-    color: #0f172a;
-    background: rgba(0, 168, 255, 0.08);
-    border-color: rgba(0, 168, 255, 0.2);
+    color: #0284c7;
+    background: rgba(2, 132, 199, 0.06);
+    border-color: rgba(2, 132, 199, 0.15);
 }
 
 html[data-theme='light'] .nav-link.active {
     color: #0284c7;
-    background: rgba(0, 168, 255, 0.12);
-    border-color: rgba(0, 168, 255, 0.35);
-    box-shadow: 0 0 15px rgba(0, 168, 255, 0.12);
+    background: rgba(2, 132, 199, 0.10);
+    border-color: rgba(2, 132, 199, 0.22);
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.10);
+    font-weight: 700;
 }
 
 html[data-theme='light'] .nav-link.active svg {
-    color: #b45309;
+    color: #0284c7;
 }
 
 html[data-theme='light'] .user-stats-pill {
@@ -437,7 +561,36 @@ html[data-theme='light'] .mobile-nav-drawer {
     margin-top: auto;
 }
 
+/* Em telas intermediárias, oculta o label do botão de acessibilidade */
+@media (max-width: 1280px) {
+    .accessibility-trigger-btn #accessibilityTriggerLabel,
+    .accessibility-trigger-btn span {
+        display: none;
+    }
+
+    .accessibility-trigger-btn {
+        width: 40px;
+        padding: 0;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 1100px) {
+    .header-nav {
+        gap: 2px;
+    }
+
+    .nav-link {
+        padding: 0 10px;
+        font-size: 0.82rem;
+    }
+}
+
 @media (max-width: 992px) {
+    .header-container {
+        padding-left: 118px;
+    }
+
     .header-nav {
         display: none;
     }
@@ -448,6 +601,11 @@ html[data-theme='light'] .mobile-nav-drawer {
 }
 
 @media (max-width: 600px) {
+    .header-container {
+        padding-left: 106px;
+        padding-right: 14px;
+    }
+
     .app-header .theme-toggle {
         top: 12px !important;
         left: 12px !important;

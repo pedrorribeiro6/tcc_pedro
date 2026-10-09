@@ -1,10 +1,13 @@
 <?php
 session_start();
+require_once 'rank_helper.php';
 
 $usuario_nome = $_SESSION['usuario_nome'] ?? 'Jovem Arquimedes';
 $pontos = $_SESSION['usuario_pontos'] ?? 2450;
-$nivel = floor($pontos / 1000);
+$nivel = calcularNivel($pontos);
 $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
+
+$rank_info = obterInfoRank($nivel, $pontos);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -14,13 +17,17 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
     <title>The Mathematical Game - Arena do Jogo</title>
     
     <!-- Google Fonts -->
+    <link rel="icon" type="image/png" href="../imagens/favicon_logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Estilos do Projeto -->
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/games.css?v=<?= time(); ?>">
+    <link rel="stylesheet" href="../css/global.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../css/header.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../css/accessibility.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../css/style2.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../css/games.css?v=<?= time() ?>">
 </head>
 <body class="app-body">
 
@@ -49,8 +56,17 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
             <div class="header-user-actions">
                 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar tema claro" title="Ativar tema claro" style="display:inline-flex;width:96px;min-width:96px;height:40px;flex:0 0 96px;align-items:center;justify-content:center;gap:7px;padding:0 10px;border:1px solid #00a8ff;border-radius:14px;background:rgba(0,168,255,.18);color:#fbbf24;cursor:pointer;"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span>Claro</span></button>
                 <div class="user-stats-pill">
+                    <div class="stat-item stat-rank rank-badge rank-badge--<?= $rank_info['badge_class'] ?>" title="Elo Ranqueado: <?= htmlspecialchars($rank_info['nome_completo']) ?>">
+                        <span class="rank-icon-mini"><?= $rank_info['icone'] ?></span>
+                        <span class="rank-name-text"><?= htmlspecialchars($rank_info['nome_completo']) ?></span>
+                    </div>
+                    <div class="stat-divider"></div>
                     <div class="stat-item stat-level">
                         <span>Nível <?= $nivel ?></span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item stat-points">
+                        <span><?= number_format($pontos, 0, ',', '.') ?> XP</span>
                     </div>
                 </div>
 
@@ -61,9 +77,14 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
                     <div class="profile-menu-popover" id="profileMenuPopover">
                         <div class="profile-menu-header">
                             <div class="user-display-name"><?= htmlspecialchars($usuario_nome) ?></div>
+                            <div class="profile-rank-tag rank-badge rank-badge--<?= $rank_info['badge_class'] ?>" style="margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; padding: 4px 10px; border-radius: 999px;">
+                                <span><?= $rank_info['icone'] ?></span>
+                                <strong><?= htmlspecialchars($rank_info['nome_completo']) ?></strong>
+                            </div>
                         </div>
+                        <a href="perfil.php" class="profile-menu-item"><span>Meu Perfil</span></a>
+                        <a href="jogos_menu.php" class="profile-menu-item"><span>Catálogo de Jogos</span></a>
                         <a href="historico.php" class="profile-menu-item"><span>Meu Histórico</span></a>
-                        <a href="ranking.php" class="profile-menu-item"><span>Ranking</span></a>
                         <a href="dicas.php" class="profile-menu-item"><span>Fórmulas & Dicas</span></a>
                         <a href="logout.php" class="profile-menu-item logout"><span>Sair</span></a>
                     </div>
@@ -132,6 +153,18 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
                 </div>
             </div>
 
+            <!-- Divisão / Elo Ranqueado Atualizado -->
+            <div id="modalRankBox" style="margin-bottom: 20px; padding: 10px 14px; border-radius: 14px; background: rgba(0, 168, 255, 0.08); border: 1px solid rgba(0, 168, 255, 0.2); display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="modalRankIcon" style="font-size: 1.4rem;"><?= $rank_info['icone'] ?></span>
+                    <div style="text-align: left;">
+                        <div style="font-size: 0.72rem; color: var(--color-text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Ranqueado</div>
+                        <strong id="modalRankName" style="font-size: 0.95rem; color: var(--color-text);"><?= htmlspecialchars($rank_info['nome_completo']) ?></strong>
+                    </div>
+                </div>
+                <span id="modalRankTier" style="font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; background: rgba(255,255,255,0.06); color: var(--color-text-muted); font-weight: 600;"><?= htmlspecialchars($rank_info['tier']) ?></span>
+            </div>
+
             <div class="modal-actions">
                 <button onclick="window.location.reload();" class="btn-hero-primary" style="flex: 1; padding: 12px;">
                     <span>Jogar Novamente</span>
@@ -144,7 +177,7 @@ $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
     </div>
 
     <!-- Script do Motor dos Jogos -->
-    <script src="../js/theme.js?v=3"></script>
+    <script src="../js/theme.js?v=<?= time() ?>"></script>
     <script src="../js/games.js?v=<?= time(); ?>"></script>
 </body>
 </html>

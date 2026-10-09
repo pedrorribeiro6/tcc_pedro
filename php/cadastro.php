@@ -23,25 +23,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mensagem_erro = 'As senhas não coincidem.';
     } elseif ($pdo) {
         try {
-            // Verifica se o e-mail já está cadastrado
-            $check = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email LIMIT 1");
-            $check->execute(['email' => $email]);
+            $hash = password_hash($senha, PASSWORD_BCRYPT);
+            $stmt = $pdo->prepare(
+                "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)"
+            );
+            $stmt->execute(['nome' => $nome, 'email' => $email, 'senha' => $hash]);
 
-            if ($check->fetch()) {
+            header('Location: index.php');
+            exit;
+        } catch (PDOException $e) {
+            // Código 23000 = violação de integridade (UNIQUE KEY) — e-mail duplicado
+            if ($e->getCode() === '23000') {
                 $mensagem_erro = 'Este e-mail já está cadastrado. Faça login ou use outro e-mail.';
             } else {
-                $hash = password_hash($senha, PASSWORD_BCRYPT);
-                $stmt = $pdo->prepare(
-                    "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)"
-                );
-                $stmt->execute(['nome' => $nome, 'email' => $email, 'senha' => $hash]);
-
-                header('Location: index.php');
-                exit;
+                error_log('Erro ao cadastrar usuário: ' . $e->getMessage());
+                $mensagem_erro = 'Erro técnico ao criar conta. Tente novamente.';
             }
-        } catch (PDOException $e) {
-            error_log('Erro ao cadastrar usuário: ' . $e->getMessage());
-            $mensagem_erro = 'Erro técnico: ' . $e->getMessage();
         }
     } else {
         $mensagem_erro = 'Não foi possível conectar ao banco de dados. Verifique o servidor.';
@@ -57,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>The Mathematical Game - Criar Conta</title>
     
     <!-- Google Fonts & Favicon -->
+    <link rel="icon" type="image/png" href="../imagens/favicon_logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">

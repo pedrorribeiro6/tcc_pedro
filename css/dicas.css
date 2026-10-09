@@ -6,6 +6,11 @@
     margin-top: 20px;
 }
 
+.formulas-page {
+    max-width: 1200px;
+    padding-top: 110px;
+}
+
 .formulas-card-container {
     background: var(--color-bg-card);
     backdrop-filter: blur(18px);

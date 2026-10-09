@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'conexao.php';
+require_once 'rank_helper.php';
 
 $mensagem_erro = '';
 
@@ -26,8 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['usuario_nome']   = $usuario['nome'];
                     $_SESSION['usuario_email']  = $usuario['email'];
                     $_SESSION['usuario_pontos'] = $usuario['pontos'] ?? 0;
-                    $_SESSION['usuario_nivel']  = floor($_SESSION['usuario_pontos'] / 1000);
+                    $_SESSION['usuario_nivel']  = calcularNivel($_SESSION['usuario_pontos']);
                     $_SESSION['usuario_foto']   = $usuario['foto_perfil'] ?: '../imagens/logo_matematico.png';
+                    $_SESSION['usuario_banner'] = $usuario['banner_perfil'] ?? '../imagens/banners/banner_matematico.png';
+                    $_SESSION['historico']      = [];
                     header('Location: home.php');
                     exit;
                 } else {
@@ -52,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>The Mathematical Game - Login</title>
     
     
+    <link rel="icon" type="image/png" href="../imagens/favicon_logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
