@@ -167,6 +167,138 @@ html[data-colorblind="high-contrast"] .btn-save-profile {
     border: 2px solid #ffffff !important;
 }
 
+/* ALTO CONTRASTE + TEMA CLARO (WCAG AAA - fundo branco, texto preto puro) */
+html[data-colorblind="high-contrast"][data-theme="light"] {
+    --color-bg-deep:       #ffffff !important;
+    --color-bg-navy:       #f0f0f0 !important;
+    --color-bg-card:       #ffffff !important;
+    --color-bg-card-hover: #f5f5f5 !important;
+    --color-text-title:    #000000 !important;
+    --color-text-main:     #000000 !important;
+    --color-text-dark:     #000000 !important;
+    --color-text-muted:    #1a1a1a !important;
+    --color-border-subtle: #000000 !important;
+    --color-cyan-vibrant:  #0050a0 !important;
+    --color-gold-primary:  #7a4a00 !important;
+    --color-gold-light:    #7a4a00 !important;
+    --color-input-bg:      #ffffff !important;
+}
+
+html[data-colorblind="high-contrast"][data-theme="light"] body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Texto visível em todos os elementos de conteúdo */
+html[data-colorblind="high-contrast"][data-theme="light"] p,
+html[data-colorblind="high-contrast"][data-theme="light"] span:not(.swatch-item),
+html[data-colorblind="high-contrast"][data-theme="light"] h1,
+html[data-colorblind="high-contrast"][data-theme="light"] h2,
+html[data-colorblind="high-contrast"][data-theme="light"] h3,
+html[data-colorblind="high-contrast"][data-theme="light"] h4,
+html[data-colorblind="high-contrast"][data-theme="light"] h5,
+html[data-colorblind="high-contrast"][data-theme="light"] li,
+html[data-colorblind="high-contrast"][data-theme="light"] td,
+html[data-colorblind="high-contrast"][data-theme="light"] th,
+html[data-colorblind="high-contrast"][data-theme="light"] label,
+html[data-colorblind="high-contrast"][data-theme="light"] .summary-val,
+html[data-colorblind="high-contrast"][data-theme="light"] .summary-lbl,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link,
+html[data-colorblind="high-contrast"][data-theme="light"] .colorblind-card-title,
+html[data-colorblind="high-contrast"][data-theme="light"] .colorblind-card-desc,
+html[data-colorblind="high-contrast"][data-theme="light"] .tea-card-title,
+html[data-colorblind="high-contrast"][data-theme="light"] .tea-card-desc,
+html[data-colorblind="high-contrast"][data-theme="light"] .formula-tab-btn,
+html[data-colorblind="high-contrast"][data-theme="light"] .geometry-images-heading h3,
+html[data-colorblind="high-contrast"][data-theme="light"] .geometry-images-heading p,
+html[data-colorblind="high-contrast"][data-theme="light"] .geometry-images-status {
+    color: #000000 !important;
+}
+
+/* Cards e contêineres de conteúdo — fundo branco, borda preta */
+html[data-colorblind="high-contrast"][data-theme="light"] [class*="-card"],
+html[data-colorblind="high-contrast"][data-theme="light"] .history-card,
+html[data-colorblind="high-contrast"][data-theme="light"] .history-summary-card,
+html[data-colorblind="high-contrast"][data-theme="light"] .formulas-card-container,
+html[data-colorblind="high-contrast"][data-theme="light"] .geometry-images-panel,
+html[data-colorblind="high-contrast"][data-theme="light"] .formula-tab-btn {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+}
+
+/* Tab ativa ainda visível */
+html[data-colorblind="high-contrast"][data-theme="light"] .formula-tab-btn.active {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+}
+
+/* Header e nav */
+html[data-colorblind="high-contrast"][data-theme="light"] .app-header {
+    background: #ffffff !important;
+    border-bottom: 2px solid #000000 !important;
+    box-shadow: none !important;
+}
+
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link {
+    color: #000000 !important;
+}
+
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link:hover {
+    color: #000000 !important;
+    background: rgba(0, 0, 0, 0.08) !important;
+    border-color: #000000 !important;
+}
+
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active {
+    background: #003366 !important;
+    color: #ffffff !important;
+    border-color: #003366 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+}
+
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active span,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg path,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg polyline,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg circle,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg line {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg path,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg polyline,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg circle,
+html[data-colorblind="high-contrast"][data-theme="light"] .nav-link.active svg line {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+/* Tabela do histórico */
+html[data-colorblind="high-contrast"][data-theme="light"] .history-table th,
+html[data-colorblind="high-contrast"][data-theme="light"] .history-table td {
+    color: #000000 !important;
+    border-color: #000000 !important;
+}
+
+/* Botões */
+html[data-colorblind="high-contrast"][data-theme="light"] button {
+    border: 2px solid #000000 !important;
+}
+
+/* Pill badges e status — fundo claro com texto preto */
+html[data-colorblind="high-contrast"][data-theme="light"] .status-pill,
+html[data-colorblind="high-contrast"][data-theme="light"] .accuracy-badge-pill {
+    background: #f0f0f0 !important;
+    border: 1.5px solid #000000 !important;
+    color: #000000 !important;
+}
+
 /* -------------------------------------------------------------
    2. BOTÃO & MENU RÁPIDO DE ACESSIBILIDADE NO HEADER
    ------------------------------------------------------------- */

@@ -118,9 +118,7 @@ body {
     stroke-linejoin: round;
 }
 
-.theme-toggle::after {
-    content: attr(data-theme-label);
-}
+
 
 body.app-body {
     display: block;

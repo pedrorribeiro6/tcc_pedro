@@ -61,12 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
   
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/style3.css">
+    <link rel="stylesheet" href="../css/global.css?v=<?= filemtime('../css/global.css') ?>">
+    <link rel="stylesheet" href="../css/style3.css?v=<?= filemtime('../css/style3.css') ?>">
 
 
    
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 </head>
 <body class="auth-body">
 
@@ -84,7 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Botão de troca de tema -->
     <div class="auth-theme-toggle-wrapper">
         <button id="themeToggle" class="theme-toggle" aria-label="Ativar tema claro" title="Ativar tema claro" data-theme-label="Claro">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span>Claro</span>
         </button>
     </div>
 
@@ -171,32 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </button>
             </form>
 
-            
-            <div class="auth-divider">
-                <span>ou continue com</span>
-            </div>
 
-            
-            <div class="google-auth-wrapper">
-                <!-- Div Oficial do Google GIS -->
-                <div id="g_id_onload"
-                     data-client_id="SEU_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-                     data-context="signin"
-                     data-ux_mode="popup"
-                     data-callback="handleGoogleCredentialResponse"
-                     data-auto_prompt="false">
-                </div>
-
-                <div class="g_id_signin"
-                     data-type="standard"
-                     data-shape="rectangular"
-                     data-theme="outline"
-                     data-text="signin_with"
-                     data-size="large"
-                     data-logo_alignment="left"
-                     data-width="390">
-                </div>
-            </div>
 
            
             <div class="auth-footer">
