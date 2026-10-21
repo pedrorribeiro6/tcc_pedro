@@ -157,7 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="checkbox" name="lembrar" id="lembrar">
                         <span>Lembrar de mim</span>
                     </label>
-                    <a href="#" class="link-forgot">Esqueceu a senha?</a>
                 </div>
 
                 
