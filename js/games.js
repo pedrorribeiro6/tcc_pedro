@@ -399,82 +399,103 @@ const shapes2D3D = [
 function renderGeometriaQuestion(container) {
     const hard = game.difficulty === 'dificil';
     const easy = game.difficulty === 'facil';
-    const selectedShape = shapes2D3D[Math.floor(Math.random() * shapes2D3D.length)];
 
-    // No Fácil: Verdadeiro ou Falso
-    // No Médio: 50% V/F, 50% perguntas de lados/faces (múltipla escolha)
-    // No Difícil: 75% perguntas de lados/faces/vértices/arestas (múltipla escolha)
-    const askProperties = easy ? false : (hard ? Math.random() < 0.75 : Math.random() < 0.5);
+    // Prioriza figuras geométricas que ainda não foram sorteadas na partida atual
+    let availableShapes = shapes2D3D.filter(s => !game.askedQuestions.has('SHAPE_' + s.name));
+    if (availableShapes.length === 0) {
+        // Se todas as 21 figuras já foram apresentadas na partida, reinicia o pool de figuras mantendo as perguntas no histórico
+        shapes2D3D.forEach(s => game.askedQuestions.delete('SHAPE_' + s.name));
+        availableShapes = shapes2D3D;
+    }
+
+    let selectedShape;
+    let questionText, correctAnswer;
+    let isTrueStatement = false;
+    let statementName = '';
+    let askProperties = false;
+    let questionKey = '';
+    let attempts = 0;
+
+    do {
+        attempts++;
+        selectedShape = availableShapes[Math.floor(Math.random() * availableShapes.length)];
+
+        // No Fácil: Verdadeiro ou Falso
+        // No Médio: 50% V/F, 50% perguntas de lados/faces (múltipla escolha)
+        // No Difícil: 75% perguntas de lados/faces/vértices/arestas (múltipla escolha)
+        askProperties = easy ? false : (hard ? Math.random() < 0.75 : Math.random() < 0.5);
+
+        if (askProperties) {
+            let propType = '';
+            if (selectedShape.type === '2D') {
+                const askVertices = hard && Math.random() > 0.5;
+                if (askVertices) {
+                    propType = 'vertices';
+                    questionText = `Quantos vértices possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
+                    correctAnswer = selectedShape.vertices;
+                } else {
+                    propType = 'lados';
+                    questionText = `Quantos lados possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
+                    correctAnswer = selectedShape.sides;
+                }
+            } else {
+                // Figura 3D: faces, vértices ou arestas
+                const propPick = hard ? Math.floor(Math.random() * 3) : 0;
+                if (propPick === 0) {
+                    propType = 'faces';
+                    questionText = `Quantas faces possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
+                    correctAnswer = selectedShape.faces;
+                } else if (propPick === 1) {
+                    propType = 'vertices';
+                    questionText = `Quantos vértices possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
+                    correctAnswer = selectedShape.vertices;
+                } else {
+                    propType = 'arestas';
+                    questionText = `Quantas arestas possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
+                    correctAnswer = selectedShape.edges;
+                }
+            }
+            questionKey = `GEO_PROP_${selectedShape.name}_${propType}`;
+        } else {
+            // Formato Verdadeiro ou Falso
+            isTrueStatement = Math.random() > 0.5;
+            statementName = selectedShape.name;
+
+            if (!isTrueStatement) {
+                // Seleciona figura falsa preferencialmente do mesmo tipo (2D com 2D, 3D com 3D)
+                const otherShapesSameType = shapes2D3D.filter(s => s.name !== selectedShape.name && s.type === selectedShape.type);
+                const falsePool = otherShapesSameType.length > 0 ? otherShapesSameType : shapes2D3D.filter(s => s.name !== selectedShape.name);
+                statementName = falsePool[Math.floor(Math.random() * falsePool.length)].name;
+            }
+
+            questionText = `A figura geométrica exibida abaixo é um(a) "${statementName}"?`;
+            questionKey = `GEO_VF_${selectedShape.name}_${statementName}`;
+        }
+    } while ((game.askedQuestions.has(questionKey) || game.askedQuestions.has(questionText)) && attempts < 50);
+
+    // Registra a figura e a pergunta sorteada para impedir repetição na mesma partida
+    game.askedQuestions.add('SHAPE_' + selectedShape.name);
+    game.askedQuestions.add(questionKey);
+    game.askedQuestions.add(questionText);
+
+    const title = document.createElement('h2');
+    title.className = 'question-main-text';
+    title.textContent = questionText;
+    container.appendChild(title);
+
+    const displayBox = document.createElement('div');
+    displayBox.className = 'geometry-display-box';
+    displayBox.innerHTML = `
+        <img src="${selectedShape.image}" 
+             alt="${selectedShape.name}" 
+             class="geometry-img">
+    `;
+    container.appendChild(displayBox);
 
     if (askProperties) {
-        let questionText, correctAnswer;
-
-        if (selectedShape.type === '2D') {
-            const askVertices = hard && Math.random() > 0.5;
-            if (askVertices) {
-                questionText = `Quantos vértices possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
-                correctAnswer = selectedShape.vertices;
-            } else {
-                questionText = `Quantos lados possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
-                correctAnswer = selectedShape.sides;
-            }
-        } else {
-            // Figura 3D: faces, vértices ou arestas
-            const propPick = hard ? Math.floor(Math.random() * 3) : 0;
-            if (propPick === 0) {
-                questionText = `Quantas faces possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
-                correctAnswer = selectedShape.faces;
-            } else if (propPick === 1) {
-                questionText = `Quantos vértices possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
-                correctAnswer = selectedShape.vertices;
-            } else {
-                questionText = `Quantas arestas possui o(a) "${selectedShape.name}" exibido(a) abaixo?`;
-                correctAnswer = selectedShape.edges;
-            }
-        }
-
-        const title = document.createElement('h2');
-        title.className = 'question-main-text';
-        title.textContent = questionText;
-        container.appendChild(title);
-
-        const displayBox = document.createElement('div');
-        displayBox.className = 'geometry-display-box';
-        displayBox.innerHTML = `
-            <img src="${selectedShape.image}" 
-                 alt="${selectedShape.name}" 
-                 class="geometry-img">
-        `;
-        container.appendChild(displayBox);
-
         const options = generateOptions(correctAnswer, 0);
         renderOptionsGrid(container, options, correctAnswer);
     } else {
-        // Formato Verdadeiro ou Falso
-        const isTrueStatement = Math.random() > 0.5;
-        let statementName = selectedShape.name;
-
-        if (!isTrueStatement) {
-            const otherShapes = shapes2D3D.filter(s => s.name !== selectedShape.name);
-            statementName = otherShapes[Math.floor(Math.random() * otherShapes.length)].name;
-        }
-
-        const questionText = `A figura geométrica exibida abaixo é um(a) "${statementName}"?`;
-
-        const title = document.createElement('h2');
-        title.className = 'question-main-text';
-        title.textContent = questionText;
-        container.appendChild(title);
-
-        const displayBox = document.createElement('div');
-        displayBox.className = 'geometry-display-box';
-        displayBox.innerHTML = `
-            <img src="${selectedShape.image}" 
-                 alt="${selectedShape.name}" 
-                 class="geometry-img">
-        `;
-        container.appendChild(displayBox);
-
         const tfContainer = document.createElement('div');
         tfContainer.className = 'true-false-container';
 
@@ -504,11 +525,18 @@ function renderCartesianoQuestion(container) {
     const maxCoord = easy ? 5 : 7;
     const showLabels = !hard; // No modo difícil, remove as indicações numéricas dos eixos!
 
-    // Sorteia Coordenadas entre -maxCoord e +maxCoord (evitando 0,0)
-    let targetX = randInt(-maxCoord, maxCoord);
-    let targetY = randInt(-maxCoord, maxCoord);
+    // Sorteia Coordenadas entre -maxCoord e +maxCoord (evitando 0,0 e repetições)
+    let targetX, targetY, coordKey;
+    let attempts = 0;
+    do {
+        attempts++;
+        targetX = randInt(-maxCoord, maxCoord);
+        targetY = randInt(-maxCoord, maxCoord);
+        if (targetX === 0 && targetY === 0) targetX = Math.min(3, maxCoord);
+        coordKey = `CART_${targetX}_${targetY}`;
+    } while (game.askedQuestions.has(coordKey) && attempts < 50);
 
-    if (targetX === 0 && targetY === 0) targetX = Math.min(3, maxCoord);
+    game.askedQuestions.add(coordKey);
 
     const headerWrapper = document.createElement('div');
     headerWrapper.className = 'cartesiano-header-box';
