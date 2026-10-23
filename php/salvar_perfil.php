@@ -26,8 +26,7 @@ if (empty($nome)) {
 }
 
 $novaFoto = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
-$bannerPadrao = '../imagens/banners/banner_matematico.svg';
-$novoBanner = $_SESSION['usuario_banner'] ?? $bannerPadrao;
+$novoBanner = $_SESSION['usuario_banner'] ?? null;
 $remover_banner = isset($_POST['remover_banner']) && $_POST['remover_banner'] === '1';
 
 // 1. Processar Presets e Remoção de Banner
@@ -39,7 +38,7 @@ if ($remover_banner) {
             @unlink($arquivoAntigo);
         }
     }
-    $novoBanner = $bannerPadrao;
+    $novoBanner = null;
 } else {
     if (!empty($avatar_preset) && strpos($avatar_preset, '..') === 0) {
         $novaFoto = $avatar_preset;

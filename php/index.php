@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['usuario_pontos'] = $usuario['pontos'] ?? 0;
                     $_SESSION['usuario_nivel']  = calcularNivel($_SESSION['usuario_pontos']);
                     $_SESSION['usuario_foto']   = $usuario['foto_perfil'] ?: '../imagens/logo_matematico.png';
-                    $_SESSION['usuario_banner'] = $usuario['banner_perfil'] ?? '../imagens/banners/banner_matematico.png';
+                    $_SESSION['usuario_banner'] = $usuario['banner_perfil'] ?? null;
                     $_SESSION['historico']      = [];
                     header('Location: home.php');
                     exit;

@@ -16,7 +16,7 @@ $nome = $_SESSION['usuario_nome'] ?? 'Jovem Arquimedes';
 $email = $_SESSION['usuario_email'] ?? 'arquimedes@matematica.com';
 $pontos = $_SESSION['usuario_pontos'] ?? 2450;
 $foto_perfil = $_SESSION['usuario_foto'] ?? '../imagens/logo_matematico.png';
-$banner_perfil = $_SESSION['usuario_banner'] ?? '../imagens/banners/banner_matematico.svg';
+$banner_perfil = $_SESSION['usuario_banner'] ?? null;
 
 $total_partidas = 0;
 $media_precisao = 0;
@@ -32,7 +32,7 @@ if ($pdo && $usuario_id) {
             $email = $userDb['email'];
             $pontos = $userDb['pontos'] ?? 0;
             if (!empty($userDb['foto_perfil'])) $foto_perfil = $userDb['foto_perfil'];
-            if (!empty($userDb['banner_perfil'])) $banner_perfil = $userDb['banner_perfil'];
+            $banner_perfil = !empty($userDb['banner_perfil']) ? $userDb['banner_perfil'] : null;
             $_SESSION['usuario_nome'] = $nome;
             $_SESSION['usuario_email'] = $email;
             $_SESSION['usuario_pontos'] = $pontos;
@@ -226,7 +226,7 @@ $rank_info = obterInfoRank($nivel, $pontos);
         <!-- HERO BANNER DO JOGADOR -->
         <div class="perfil-hero-card">
             <div class="perfil-banner-viewport">
-                <img src="<?= htmlspecialchars($banner_perfil) ?>" alt="Banner do Jogador" class="perfil-banner-img" id="currentBannerImg">
+                <img src="<?= htmlspecialchars($banner_perfil ?? '') ?>" alt="Banner do Jogador" class="perfil-banner-img" id="currentBannerImg" style="<?= empty($banner_perfil) ? 'display: none;' : '' ?>">
                 <div class="perfil-banner-overlay"></div>
             </div>
 
@@ -618,8 +618,7 @@ $rank_info = obterInfoRank($nivel, $pontos);
         const btnRemoverBanner = document.getElementById('btnRemoverBanner');
         const btnRemoverBannerTexto = document.getElementById('btnRemoverBannerTexto');
         const removerBannerInput = document.getElementById('removerBannerInput');
-        const bannerPadrao = '../imagens/banners/banner_matematico.svg';
-        let bannerSalvoOriginal = currentBannerImg.src;
+        let bannerSalvoOriginal = (currentBannerImg && currentBannerImg.style.display !== 'none' && currentBannerImg.getAttribute('src')) ? currentBannerImg.src : '';
 
         // Ação do Botão Remover Banner
         if (btnRemoverBanner) {
@@ -631,17 +630,22 @@ $rank_info = obterInfoRank($nivel, $pontos);
                     removerBannerInput.value = '0';
                     btnRemoverBanner.classList.remove('is-removed');
                     btnRemoverBannerTexto.textContent = 'Remover Banner';
-                    currentBannerImg.src = bannerSalvoOriginal;
+                    if (bannerSalvoOriginal) {
+                        currentBannerImg.src = bannerSalvoOriginal;
+                        currentBannerImg.style.display = 'block';
+                    } else {
+                        currentBannerImg.style.display = 'none';
+                    }
                     bannerFileFeedback.textContent = 'Remoção cancelada. Banner original mantido.';
                     mostrarToast('Remoção do banner desfeita!', 'info');
                 } else {
                     // Limpa arquivo selecionado no input
                     bannerUploadInput.value = '';
 
-                    // Se já estiver usando o banner padrão
-                    if (bannerSalvoOriginal.includes('banner_matematico.svg')) {
-                        mostrarToast('Você já está utilizando o banner padrão do sistema.', 'info');
-                        bannerFileFeedback.textContent = 'Banner padrão já em uso.';
+                    // Se já estiver usando o visual padrão (sem banner)
+                    if (!bannerSalvoOriginal || currentBannerImg.style.display === 'none') {
+                        mostrarToast('Você já está utilizando o visual padrão do sistema.', 'info');
+                        bannerFileFeedback.textContent = 'Visual padrão já em uso.';
                         return;
                     }
 
@@ -649,7 +653,8 @@ $rank_info = obterInfoRank($nivel, $pontos);
                     removerBannerInput.value = '1';
                     btnRemoverBanner.classList.add('is-removed');
                     btnRemoverBannerTexto.textContent = 'Desfazer Remoção';
-                    currentBannerImg.src = bannerPadrao;
+                    currentBannerImg.style.display = 'none';
+                    currentBannerImg.src = '';
                     bannerFileFeedback.textContent = 'Banner marcado para remoção. Clique em "Salvar Alterações" para confirmar.';
                     mostrarToast('Banner marcado para remoção! Salve as alterações para confirmar.', 'success');
                 }
@@ -664,13 +669,13 @@ $rank_info = obterInfoRank($nivel, $pontos);
                     btnRemoverBannerTexto.textContent = 'Remover Banner';
                 }
                 removerBannerInput.value = '0';
-                bannerItems.forEach(b => b.classList.remove('active'));
                 bannerPresetInput.value = '';
                 bannerFileFeedback.textContent = 'Arquivo selecionado: ' + file.name;
                 
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     currentBannerImg.src = event.target.result;
+                    currentBannerImg.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
             }
