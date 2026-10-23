@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($pdo) {
             try {
-                $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email LIMIT 1");
+                $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE LOWER(email) = LOWER(:email) LIMIT 1");
                 $stmt->execute(['email' => $loginInput]);
                 $usuario = $stmt->fetch();
 

@@ -85,3 +85,16 @@ CREATE OR REPLACE VIEW `vw_estatisticas_usuario` AS
     FROM `usuarios` u
     LEFT JOIN `historico_partidas` h ON h.`usuario_id` = u.`id`
     GROUP BY u.`id`, u.`nome`;
+
+-- =============================================================================
+-- MIGRAÇÃO / MANUTENÇÃO (Para bancos já existentes com contas duplicadas):
+-- Caso a tabela `usuarios` já existia antes e acumulou registros repetidos:
+--
+-- 1. Remove duplicatas mantendo a conta mais recente (ou com maior ID):
+-- DELETE u1 FROM usuarios u1
+-- INNER JOIN usuarios u2 
+-- WHERE u1.id < u2.id AND LOWER(u1.email) = LOWER(u2.email);
+--
+-- 2. Garante a restrição UNIQUE na coluna `email`:
+-- ALTER TABLE `usuarios` ADD UNIQUE KEY `uq_email` (`email`);
+-- =============================================================================

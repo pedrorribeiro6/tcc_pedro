@@ -8,7 +8,7 @@ $mensagem_erro = '';
 // Processa o envio do formulário de cadastro
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome           = trim($_POST['cad_nome']    ?? '');
-    $email          = trim($_POST['cad_email']   ?? '');
+    $email          = strtolower(trim($_POST['cad_email']   ?? ''));
     $senha          = $_POST['cad_senha']          ?? '';
     $confirma_senha = $_POST['cad_confirma_senha'] ?? '';
 
@@ -23,17 +23,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mensagem_erro = 'As senhas não coincidem.';
     } elseif ($pdo) {
         try {
-            $hash = password_hash($senha, PASSWORD_BCRYPT);
-            $stmt = $pdo->prepare(
-                "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)"
-            );
-            $stmt->execute(['nome' => $nome, 'email' => $email, 'senha' => $hash]);
+            // 1. Verificação prévia no banco: impede contas com o mesmo e-mail mesmo sem constraint no MySQL
+            $stmtCheck = $pdo->prepare("SELECT id FROM usuarios WHERE LOWER(email) = LOWER(:email) LIMIT 1");
+            $stmtCheck->execute(['email' => $email]);
+            $usuarioExistente = $stmtCheck->fetch();
 
-            header('Location: index.php');
-            exit;
+            if ($usuarioExistente) {
+                $mensagem_erro = 'Este e-mail já está cadastrado. Faça login ou use outro e-mail.';
+            } else {
+                // 2. Hash seguro e inserção da nova conta
+                $hash = password_hash($senha, PASSWORD_BCRYPT);
+                $stmt = $pdo->prepare(
+                    "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)"
+                );
+                $stmt->execute(['nome' => $nome, 'email' => $email, 'senha' => $hash]);
+
+                header('Location: index.php');
+                exit;
+            }
         } catch (PDOException $e) {
-            // Código 23000 = violação de integridade (UNIQUE KEY) — e-mail duplicado
-            if ($e->getCode() === '23000') {
+            // Código 23000 ou erro 1062 = violação de integridade (UNIQUE KEY / Duplicate entry)
+            if ($e->getCode() === '23000' || (isset($e->errorInfo[1]) && $e->errorInfo[1] === 1062)) {
                 $mensagem_erro = 'Este e-mail já está cadastrado. Faça login ou use outro e-mail.';
             } else {
                 error_log('Erro ao cadastrar usuário: ' . $e->getMessage());
@@ -124,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                         </span>
-                        <input type="text" id="cad_nome" name="cad_nome" class="form-input" placeholder="Ex: Arquimedes da Silva" required autocomplete="name">
+                        <input type="text" id="cad_nome" name="cad_nome" class="form-input" placeholder="Ex: Arquimedes da Silva" required autocomplete="name" value="<?= isset($nome) ? htmlspecialchars($nome) : '' ?>">
                     </div>
                 </div>
 
@@ -138,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
                         </span>
-                        <input type="email" id="cad_email" name="cad_email" class="form-input" placeholder="seu.email@exemplo.com" required autocomplete="email">
+                        <input type="email" id="cad_email" name="cad_email" class="form-input" placeholder="seu.email@exemplo.com" required autocomplete="email" value="<?= isset($email) ? htmlspecialchars($email) : '' ?>">
                     </div>
                 </div>
 
