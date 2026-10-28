@@ -72,9 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Estilo Personalizado -->
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/style3.css">
-
-    <!-- Google Identity Services API (GIS) -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="auth-body">
 
@@ -219,33 +216,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </button>
             </form>
 
-            
-            <div class="auth-divider">
-                <span>ou cadastre-se com</span>
-            </div>
-
-           
-            <div class="google-auth-wrapper">
-                <div id="g_id_onload"
-                     data-client_id="SEU_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-                     data-context="signup"
-                     data-ux_mode="popup"
-                     data-callback="handleGoogleCredentialResponse"
-                     data-auto_prompt="false">
-                </div>
-
-                <div class="g_id_signin"
-                     data-type="standard"
-                     data-shape="rectangular"
-                     data-theme="outline"
-                     data-text="signup_with"
-                     data-size="large"
-                     data-logo_alignment="left"
-                     data-width="390">
-                </div>
-            </div>
-
-           
             <div class="auth-footer">
                 Já possui uma conta matemática? <a href="index.php">Fazer Login</a>
             </div>
